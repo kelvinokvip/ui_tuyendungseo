@@ -1,0 +1,18 @@
+/* Error: Undefined mixin.
+ *     ,
+ * 251 | @include _assert-ascending($grid-breakpoints, "$grid-breakpoints");
+ *     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *     '
+ *   src\assets\scss\custom\_variables.scss 251:1         @import
+ *   src\assets\scss\argon-dashboard-pro-react.scss 27:9  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: 'Error: Undefined mixin.\a     \2577 \a 251 \2502  @include _assert-ascending($grid-breakpoints, "$grid-breakpoints");\d\a     \2502  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a     \2575 \a   src\\assets\\scss\\custom\\_variables.scss 251:1         @import\a   src\\assets\\scss\\argon-dashboard-pro-react.scss 27:9  root stylesheet';
+}
