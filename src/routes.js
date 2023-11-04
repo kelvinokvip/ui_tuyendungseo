@@ -89,7 +89,7 @@ const routes = [
     name: "Thông Báo",
     icon: "ni ni-bell-55 text-primary",
     state: "notificationCollapse",
-    permission: "notification",
+    permission: "admin-post",
     views: [
       {
         path: "/thong-bao/danh-sach",
@@ -101,7 +101,40 @@ const routes = [
       },
     ],
   },
-
+  {
+    collapse: true,
+    name: "Bài test",
+    icon: "ni ni-shop text-primary",
+    state: "B",
+    permission: "post-test",
+    views: [
+      {
+        path: "/list-test",
+        name: "Danh sách bài test",
+        miniName: "D",
+        component: <CtvTest />,
+        layout: "/admin",
+        permission: "post-test",
+      },
+      {
+        path: "/my-test",
+        name: "Bài test của tôi",
+        miniName: "D",
+        component: <MyPost />,
+        layout: "/admin",
+        permission: "post-test",
+      },
+      {
+        path: "/my-test/:id",
+        name: "Bài test của tôi",
+        miniName: "D",
+        component: <WritePost />,
+        layout: "/admin",
+        permission: "post-test",
+        invisible: true,
+      },
+    ],
+  },
   {
     path: "/login",
     name: "Login",
