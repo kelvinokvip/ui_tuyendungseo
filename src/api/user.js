@@ -19,3 +19,9 @@ export async function updateCtvStatus(id, status) {
   const res = await getInstance().put(`/user/ctv/${id}`, { status });
   return res?.data;
 }
+
+//get all user ctv
+export async function getAllCTV() {
+  const res = await getInstance().get(`/user/ctv/`);
+  return res?.data;
+}

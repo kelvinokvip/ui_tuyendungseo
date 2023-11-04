@@ -31,6 +31,7 @@ function Admin() {
   const [sidenavOpen, setSidenavOpen] = React.useState(true);
   const location = useLocation();
   const mainContentRef = React.useRef(null);
+  console.log(permission);
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -101,10 +102,7 @@ function Admin() {
         />
         <Routes>
           {getRoutes(routes)}
-          <Route
-            path="*"
-            element={<Navigate to="/admin/test-post" replace />}
-          />
+          <Route path="*" element={<Navigate to="/admin/" replace />} />
         </Routes>
         <AdminFooter />
       </div>
