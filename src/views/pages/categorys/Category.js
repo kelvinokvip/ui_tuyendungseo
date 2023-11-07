@@ -222,7 +222,7 @@ function Category() {
                           listClassName="justify-content-end mb-0"
                         >
                           <PaginationItem
-                            className={pageIndex == "1" && "disabled"}
+                            className={pageIndex === "1" && "disabled"}
                           >
                             <PaginationLink
                               href="#pablo"
@@ -239,7 +239,7 @@ function Category() {
                           {renderPaginationItemDivs()}
 
                           <PaginationItem
-                            className={pageIndex == totalPages && "disabled"}
+                            className={pageIndex === totalPages && "disabled"}
                           >
                             <PaginationLink
                               href="#pablo"

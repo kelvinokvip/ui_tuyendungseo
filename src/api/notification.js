@@ -17,3 +17,15 @@ export async function getSendNotificationByUserId(userId) {
   const res = await getInstance().get(`/notification/${userId}`);
   return res?.data;
 }
+
+//delete notificaiton byId
+export async function deleteNotificationById(id) {
+  const res = await getInstance().delete(`/notification/${id}`);
+  return res?.data;
+}
+
+//get notificaiton byId
+export async function getNotificationById(id) {
+  const res = await getInstance().get(`/notificationById/${id}`);
+  return res?.data;
+}

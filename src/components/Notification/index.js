@@ -1,11 +1,17 @@
 import { getSendNotificationByUserId } from "api/notification";
 import React, { useEffect, useState } from "react";
 import { DropdownItem, DropdownMenu } from "reactstrap";
+import ModalNotification from "./ModalNotification";
 
 export default function NotificationUI() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState();
-
+  const [modal, setModal] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState("");
+  const toggle = (itemId) => {
+    setModal(!modal);
+    setSelectedItemId(itemId);
+  };
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     fetchApiGetNotificationByUserId(userId);
@@ -25,13 +31,26 @@ export default function NotificationUI() {
   return (
     <>
       {data?.length > 0 && (
-        <DropdownMenu>
+        <DropdownMenu right>
           {data?.map((item, k) => (
             <DropdownItem key={k} header>
-              {item?.title}
+              <p
+                className="text-overflow m-0 font-weight-700 text-blue text-xs "
+                onClick={() => toggle(item?._id)}
+                style={{ cursor: "pointer" }}
+              >
+                {item?.title}
+              </p>
             </DropdownItem>
           ))}
         </DropdownMenu>
+      )}
+      {selectedItemId && (
+        <ModalNotification
+          notificationId={selectedItemId}
+          modal={modal}
+          toggle={toggle}
+        />
       )}
     </>
   );

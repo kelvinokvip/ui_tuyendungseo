@@ -48,7 +48,6 @@ import MyPost from "views/pages/CtvTest/MyPost";
 import Ctv from "views/pages/Ctv";
 import TestPost from "views/pages/TestPost";
 import Notification from "views/pages/notification";
-import SendNotification from "views/pages/notification/sendNotification";
 
 const routes = [
   {
@@ -132,40 +131,6 @@ const routes = [
         component: <Notification />,
         layout: "/admin",
         permission: "admin-post",
-      },
-    ],
-  },
-  {
-    collapse: true,
-    name: "Bài test",
-    icon: "ni ni-shop text-primary",
-    state: "B",
-    permission: "post-test",
-    views: [
-      {
-        path: "/list-test",
-        name: "Danh sách bài test",
-        miniName: "D",
-        component: <CtvTest />,
-        layout: "/admin",
-        permission: "post-test",
-      },
-      {
-        path: "/my-test",
-        name: "Bài test của tôi",
-        miniName: "D",
-        component: <MyPost />,
-        layout: "/admin",
-        permission: "post-test",
-      },
-      {
-        path: "/my-test/:id",
-        name: "Bài test của tôi",
-        miniName: "D",
-        component: <WritePost />,
-        layout: "/admin",
-        permission: "post-test",
-        invisible: true,
       },
     ],
   },

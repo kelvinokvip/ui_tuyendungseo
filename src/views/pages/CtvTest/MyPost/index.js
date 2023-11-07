@@ -224,7 +224,7 @@ const MyPost = () => {
                                 {item.status === 0 && (
                                   <>
                                     <i
-                                      class="fa-sharp fa-solid fa-arrow-right"
+                                      className="fa-sharp fa-solid fa-arrow-right"
                                       onClick={navigate(
                                         `/admin/my-test/${item?._id}`
                                       )}

@@ -178,7 +178,7 @@ function CtvTest() {
                                     });
                                   }}
                                 >
-                                  <i class="fa-sharp fa-solid fa-eye"></i>
+                                  <i className="fa-sharp fa-solid fa-eye"></i>
                                 </a>
                                 <UncontrolledTooltip
                                   delay={0}

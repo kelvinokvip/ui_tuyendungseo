@@ -6,18 +6,50 @@ import {
   CardHeader,
   Col,
   Container,
+  Popover,
+  PopoverBody,
+  PopoverHeader,
   Row,
   Table,
-  UncontrolledTooltip,
 } from "reactstrap";
-import { BsPencil } from "react-icons/bs";
+import { BsTrashFill } from "react-icons/bs";
 import { getAllNotification } from "api/notification";
 import SendNotification from "./sendNotification";
+import { deleteNotificationById } from "api/notification";
+import { toast } from "react-toastify";
 export default function Notification() {
   const [loading, setLoading] = useState(false);
   const [dataNotification, setDataNotification] = useState();
   const [title, setTitle] = useState("");
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleDelete = (id) => {
+    // Gọi hàm onDelete khi người dùng xác nhận xóa
+    fetchApideleteNotificationById(id);
+    setIsOpen(false);
+  };
+
+  const fetchApideleteNotificationById = async (id) => {
+    try {
+      setLoading(true);
+      const res = await deleteNotificationById(id);
+      if (res?.success) {
+        toast.success(`Xóa thành công`);
+      } else {
+        toast.error(`Lỗi xóa thông báo! Vui lòng thử lại.`);
+      }
+      fetchApiGetAllNotification();
+    } catch (error) {
+      console.log("error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const fetchApiGetAllNotification = async () => {
     try {
       setLoading(true);
@@ -75,12 +107,11 @@ export default function Notification() {
                         <th className="sort" scope="col">
                           Trạng thái
                         </th>
-                        {/* <th className="sort" scope="col">
+                        <th className="sort" scope="col">
                           Hành động
-                        </th> */}
+                        </th>
                       </tr>
                     </thead>
-                    {/* dữ liệu */}
                     {dataNotification?.length > 0 && (
                       <tbody className="list">
                         <>
@@ -91,21 +122,30 @@ export default function Notification() {
                               <td>
                                 {item.type === true ? "public" : "private"}
                               </td>
-                              {/* <td className="table-actions">
-                                <a
-                                  className="table-action"
-                                  href="#pablo"
-                                  id="tooltip564981685"
+                              <td className="table-actions">
+                                <Button id="deletePopover" onClick={toggle}>
+                                  <BsTrashFill className="text-warning" />
+                                </Button>
+                                <Popover
+                                  placement="auto"
+                                  placementPrefix="center"
+                                  isOpen={isOpen}
+                                  target="deletePopover"
+                                  toggle={toggle}
                                 >
-                                  <BsPencil />
-                                </a>
-                                <UncontrolledTooltip
-                                  delay={0}
-                                  target="tooltip564981685"
-                                >
-                                  Chỉnh sửa
-                                </UncontrolledTooltip>
-                              </td> */}
+                                  <PopoverHeader>
+                                    Bạn có chắc chắn muốn xóa?
+                                  </PopoverHeader>
+                                  <PopoverBody>
+                                    <Button
+                                      color="danger"
+                                      onClick={() => handleDelete(item?._id)}
+                                    >
+                                      Xác nhận
+                                    </Button>
+                                  </PopoverBody>
+                                </Popover>
+                              </td>
                             </tr>
                           ))}
                         </>
