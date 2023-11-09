@@ -44,7 +44,7 @@ const renderPaginationItemDivs = (totalPages, pageIndex, setPageIndex) => {
   const divs = [];
   for (let i = 1; i <= totalPages; i++) {
     divs.push(
-      <PaginationItem className={pageIndex == i && "active"}>
+      <PaginationItem className={pageIndex === i && "active"}>
         <PaginationLink
           href="#pablo"
           onClick={(e) => {
@@ -156,6 +156,9 @@ const Ctv = () => {
                             Số bài duyệt
                           </th>
                           <th className="sort" scope="col">
+                            Chuyên mục
+                          </th>
+                          <th className="sort" scope="col">
                             Trạng thái
                           </th>
                           <th className="sort" scope="col">
@@ -165,39 +168,38 @@ const Ctv = () => {
                       </thead>
                       {/* dữ liệu */}
                       <tbody className="list">
-                        {dataCtvList?.map((item) => (
-                          <>
-                            <tr>
-                              <th scope="row">{item?.username}</th>
-                              <td className="budget">
-                                {item?.firstName} {item?.lastName}
-                              </td>
-                              <td>{item?.email} </td>
-                              <td>{item?.acceptPost}</td>
-                              <td>{options[item?.status]}</td>
-                              <td className="table-actions">
-                                <a
-                                  className="table-action"
-                                  href="#pablo"
-                                  id="tooltip564981685"
-                                  onClick={(e) => {
-                                    e.preventDefault();
+                        {dataCtvList?.map((item, k) => (
+                          <tr key={k}>
+                            <th scope="row">{item?.username}</th>
+                            <td className="budget">
+                              {item?.firstName} {item?.lastName}
+                            </td>
+                            <td>{item?.email} </td>
+                            <td>{item?.acceptPost}</td>
+                            <td>Đá gà</td>
+                            <td>{options[item?.status]}</td>
+                            <td className="table-actions">
+                              <a
+                                className="table-action"
+                                href="#pablo"
+                                id="tooltip564981685"
+                                onClick={(e) => {
+                                  e.preventDefault();
 
-                                    steCtvDataDetail(item);
-                                    setIsOpenUpdateModal(true);
-                                  }}
-                                >
-                                  <BsPencil />
-                                </a>
-                                <UncontrolledTooltip
-                                  delay={0}
-                                  target="tooltip564981685"
-                                >
-                                  Chỉnh sửa
-                                </UncontrolledTooltip>
-                              </td>
-                            </tr>
-                          </>
+                                  steCtvDataDetail(item);
+                                  setIsOpenUpdateModal(true);
+                                }}
+                              >
+                                <BsPencil />
+                              </a>
+                              <UncontrolledTooltip
+                                delay={0}
+                                target="tooltip564981685"
+                              >
+                                Chỉnh sửa
+                              </UncontrolledTooltip>
+                            </td>
+                          </tr>
                         ))}
                       </tbody>
                     </Table>

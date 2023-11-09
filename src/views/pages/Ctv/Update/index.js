@@ -35,7 +35,7 @@ const UpdateCTV = ({
 
   const handleUpdateCtv = async () => {
     try {
-      const res = await updateCtvStatus(ctvDataDetail?.id, status);
+      const res = await updateCtvStatus(ctvDataDetail?._id, status);
       if (res?.success) {
         toast.success(res?.message);
         handleUpdateSuccess();

@@ -6,8 +6,6 @@ import { getPermissionByRole } from "api/permission";
 const useAuthContext = () => {
   const { user, setUser, getPermission, permission } = useContext(AuthContext);
   const pathname = window.location.pathname;
-  // console.log("user:", user);
-  // console.log("pathname:", pathname);
   useEffect(() => {
     if (Object.keys(user).length) {
     } else {

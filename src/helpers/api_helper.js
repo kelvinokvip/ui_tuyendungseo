@@ -125,7 +125,6 @@ class APIClient {
     return axios.delete(url, { ...config });
   };
   createWithFormData = (url, data) => {
-    // console.log(data);
     const formData = new FormData();
     formData.append("tax_description", data.tax_description);
     formData.append("tax_name", data.tax_name);

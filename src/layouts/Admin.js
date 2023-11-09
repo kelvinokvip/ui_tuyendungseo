@@ -31,7 +31,6 @@ function Admin() {
   const [sidenavOpen, setSidenavOpen] = React.useState(true);
   const location = useLocation();
   const mainContentRef = React.useRef(null);
-  console.log(permission);
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;

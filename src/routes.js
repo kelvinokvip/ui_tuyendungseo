@@ -48,6 +48,7 @@ import MyPost from "views/pages/CtvTest/MyPost";
 import Ctv from "views/pages/Ctv";
 import TestPost from "views/pages/TestPost";
 import Notification from "views/pages/notification";
+import Posts from "views/pages/posts";
 
 const routes = [
   {
@@ -59,7 +60,7 @@ const routes = [
     views: [
       {
         path: "/test-post",
-        name: "Bài test",
+        name: "Bài test CTV",
         miniName: "A",
         component: <TestPost />,
         layout: "/admin",
@@ -78,6 +79,14 @@ const routes = [
         name: "Chuyên mục",
         miniName: "C",
         component: <Category />,
+        layout: "/admin",
+        permission: "admin-post",
+      },
+      {
+        path: "/post",
+        name: "Bài viết",
+        miniName: "E",
+        component: <Posts />,
         layout: "/admin",
         permission: "admin-post",
       },

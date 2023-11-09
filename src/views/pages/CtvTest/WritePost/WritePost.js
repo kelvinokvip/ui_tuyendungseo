@@ -90,6 +90,7 @@ const WritePost = () => {
       word: wordCount,
       expires: isExpires,
     };
+    console.log(post?.word);
     if (!isExpires) {
       if (wordCount < post?.word) {
         toast.warning("Bài viết của bạn chưa đạt đủ số từ bài viết!");
