@@ -14,7 +14,9 @@ export default function NotificationUI() {
   };
   useEffect(() => {
     const userId = localStorage.getItem("userId");
+    // if (userId) {
     fetchApiGetNotificationByUserId(userId);
+    // }
   }, []);
 
   const fetchApiGetNotificationByUserId = async (userId) => {

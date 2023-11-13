@@ -22,7 +22,6 @@ import Charts from "views/pages/Charts.js";
 import Components from "views/pages/forms/Components.js";
 import Dashboard from "views/pages/dashboards/Dashboard.js";
 import Elements from "views/pages/forms/Elements.js";
-import Google from "views/pages/maps/Google.js";
 import Grid from "views/pages/components/Grid.js";
 import Icons from "views/pages/components/Icons.js";
 import Lock from "views/pages/examples/Lock.js";
