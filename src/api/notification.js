@@ -1,8 +1,10 @@
 import { getInstance } from "helper/axios";
 
 //get random
-export async function getAllNotification() {
-  const res = await getInstance().get(`/notification`);
+export async function getAllNotification(pageSize, pageIndex) {
+  const res = await getInstance().get(
+    `/notification?pageSize=${pageSize}&pageIndex=${pageIndex}`
+  );
   return res?.data;
 }
 

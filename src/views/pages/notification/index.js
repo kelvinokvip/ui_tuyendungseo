@@ -11,18 +11,28 @@ import {
   PopoverHeader,
   Row,
   Table,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  CardFooter,
 } from "reactstrap";
+import ReactPaginate from "react-paginate";
+
 import { BsTrashFill } from "react-icons/bs";
-import { getAllNotification } from "api/notification";
+import { getAllNotification, deleteNotificationById } from "api/notification";
 import SendNotification from "./sendNotification";
-import { deleteNotificationById } from "api/notification";
 import { toast } from "react-toastify";
+
 export default function Notification() {
   const [loading, setLoading] = useState(false);
-  const [dataNotification, setDataNotification] = useState();
+  const [dataNotification, setDataNotification] = useState([]);
   const [title, setTitle] = useState("");
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [pageSize, setPageSize] = useState(10);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [totalItem, setTotalItem] = useState(0);
+  const [totalPage, setTotalPage] = useState(1);
   const toggle = () => {
     setIsOpen(!isOpen);
   };
@@ -53,17 +63,18 @@ export default function Notification() {
   const fetchApiGetAllNotification = async () => {
     try {
       setLoading(true);
-      const res = await getAllNotification();
-      setDataNotification(res);
+      const res = await getAllNotification(pageSize, pageIndex);
+      setDataNotification(res?.data);
+      setTotalItem(res?.totalItem);
+      setTotalPage(res?.totalPage);
+      setLoading(false);
     } catch (error) {
       console.log("error:", error);
-    } finally {
-      setLoading(false);
     }
   };
   useEffect(() => {
     fetchApiGetAllNotification();
-  }, []);
+  }, [pageSize, pageIndex]);
 
   const handleSendNotification = () => {
     setTitle("Gửi thông báo");
@@ -74,6 +85,14 @@ export default function Notification() {
     fetchApiGetAllNotification();
   };
 
+  const handlePageChange = (e) => {
+    console.log(e, "jaskdjklasdl");
+    if (e?.selected + 1 !== 1) {
+      setPageIndex(e.selected + 1);
+    } else {
+      fetchApiGetAllNotification();
+    }
+  };
   return (
     <>
       <SimpleHeader name="Thông báo" parentName="Quản lí thông báo" />
@@ -93,7 +112,7 @@ export default function Notification() {
                   </Col>
                 </Row>
               </CardHeader>
-              <div style={{ display: loading ? "none" : "block" }}>
+              <div>
                 <>
                   <Table className="align-items-center table-flush" responsive>
                     <thead className="thead-light">
@@ -152,6 +171,19 @@ export default function Notification() {
                       </tbody>
                     )}
                   </Table>
+
+                  <CardFooter className="py-4">
+                    <ReactPaginate
+                      className="react-paginate"
+                      breakLabel="..."
+                      nextLabel="next >"
+                      onPageChange={handlePageChange}
+                      pageRangeDisplayed={1}
+                      pageCount={totalPage}
+                      previousLabel="< previous"
+                      renderOnZeroPageCount={null}
+                    />
+                  </CardFooter>
                 </>
               </div>
             </Card>

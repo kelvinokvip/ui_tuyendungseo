@@ -29,6 +29,7 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import "assets/vendor/nucleo/css/nucleo.css";
 // core styles
 import "assets/scss/argon-dashboard-pro-react.scss?v1.2.1";
+import "assets/css/react-paginate.css";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import AuthProvider from "context/authContext";

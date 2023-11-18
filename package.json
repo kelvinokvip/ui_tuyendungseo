@@ -40,6 +40,7 @@
     "react-jvectormap": "0.0.16",
     "react-loading-spin": "^2.1.9",
     "react-notification-alert": "0.0.13",
+    "react-paginate": "^8.2.0",
     "react-perfect-scrollbar": "1.5.8",
     "react-popconfirm": "^0.1.1",
     "react-quill": "2.0.0",
