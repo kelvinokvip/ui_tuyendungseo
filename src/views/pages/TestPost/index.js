@@ -21,6 +21,7 @@ import { getPagingPost } from "api/post";
 import Select2 from "react-select2-wrapper";
 import DetailPost from "./DetailPost";
 import { EnterHelper } from "utils/EnterHelper";
+import moment from "moment";
 
 const Filter = ({ options, setStatus, status }) => {
   return (
@@ -96,8 +97,8 @@ const TestPost = () => {
         keywordDebouce,
         status
       );
-      setDataPostsList(res?.data);
-      setTotalPages(res?.totalPages);
+        setDataPostsList(res?.data);
+        setTotalPages(res?.totalPages);
     } catch (error) {
       console.log("error:", error);
     } finally {
@@ -110,7 +111,7 @@ const TestPost = () => {
 
   const statusOptions = [
     {
-      title: "Đã duyệt",
+      title: "Đạt",
       value: 2,
       color: "green",
     },
@@ -120,13 +121,18 @@ const TestPost = () => {
       color: "blue",
     },
     {
-      title: "Không duyệt",
+      title: "Không đạt",
       value: -2,
       color: "red",
     },
     {
       title: "Hết hạn",
       value: -1,
+      color: "red",
+    },
+    {
+      title: "Lọc theo thời gian nộp bài",
+      value: 5,
       color: "red",
     },
     {
@@ -186,6 +192,9 @@ const TestPost = () => {
                             Mô tả
                           </th>
                           <th className="sort" scope="col">
+                            Chuyên mục
+                          </th>
+                          <th className="sort" scope="col">
                             Từ khóa
                           </th>
                           <th className="sort" scope="col">
@@ -193,6 +202,9 @@ const TestPost = () => {
                           </th>
                           <th className="sort" scope="col">
                             Trạng thái
+                          </th>
+                          <th className="sort" scope="col">
+                            Thời gian nộp bài
                           </th>
                           <th className="sort" scope="col">
                             Hành động
@@ -209,6 +221,7 @@ const TestPost = () => {
                                 ? `${item?.description.slice(0, 50)}...`
                                 : item?.description}
                             </td>
+                            <td>{item.category}</td>
                             <td>{item?.keywords?.map((item1) => item1)}</td>
                             <td>{item.receive?.user?.username}</td>
                             <th>
@@ -226,7 +239,10 @@ const TestPost = () => {
                                 }
                               </div>
                             </th>
-
+                            <th className="sort" scope="col">
+                              {item.status == -1? "Chưa nộp bài": moment(item.receive.finishTime).diff(item.receive.receiveTime, "minutes") + 1 + 'phút'}
+                              
+                            </th>
                             <td className="table-actions">
                               <DetailPost id={item._id} refresh={refresh} />
                             </td>
