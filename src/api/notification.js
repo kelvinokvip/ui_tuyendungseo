@@ -9,8 +9,8 @@ export async function getAllNotification(pageSize, pageIndex) {
 }
 
 //post send notificaiton by userId and all
-export async function postSendNotificationByUserId(userId, data) {
-  const res = await getInstance().post(`/notification/${userId}`, data);
+export async function postSendNotification(data) {
+  const res = await getInstance().post(`/notification`, data);
   return res?.data;
 }
 

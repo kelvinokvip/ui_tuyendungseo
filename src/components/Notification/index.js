@@ -7,10 +7,10 @@ export default function NotificationUI() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState();
   const [modal, setModal] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState("");
-  const toggle = (itemId) => {
+  const [selectedItem, setSelectedItem] = useState("");
+  const toggle = (item) => {
     setModal(!modal);
-    setSelectedItemId(itemId);
+    setSelectedItem(item);
   };
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -38,7 +38,7 @@ export default function NotificationUI() {
             <DropdownItem key={k} header>
               <p
                 className="text-overflow m-0 font-weight-700 text-blue text-xs "
-                onClick={() => toggle(item?._id)}
+                onClick={() => toggle(item)}
                 style={{ cursor: "pointer" }}
               >
                 {item?.title}
@@ -47,9 +47,9 @@ export default function NotificationUI() {
           ))}
         </DropdownMenu>
       )}
-      {selectedItemId && (
+      {selectedItem && (
         <ModalNotification
-          notificationId={selectedItemId}
+        notification={selectedItem}
           modal={modal}
           toggle={toggle}
         />

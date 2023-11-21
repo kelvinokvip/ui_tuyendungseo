@@ -1,8 +1,10 @@
-import { postSendNotificationByUserId } from "api/notification";
+import { postSendNotification } from "api/notification";
 import { getAllCTV } from "api/user";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import { Button, FormGroup, Form, Input, Modal, Label } from "reactstrap";
+import { Button, FormGroup, Form, Input, Modal, Label, Spinner  } from "reactstrap";
+import Select from 'react-select';
+import { getAllCategoriesList } from "api/category";
 // const modules = {
 //   toolbar: [
 //     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -22,46 +24,50 @@ import { Button, FormGroup, Form, Input, Modal, Label } from "reactstrap";
 //     matchVisual: false,
 //   },
 // };
-export default function SendNotification({ isOpenModal, handleCancelModal }) {
+export default function SendNotification({ isOpenModal, handleCancelModal, dataCTV }) {
   const [open, setOpen] = useState(isOpenModal);
   const [loading, setLoading] = useState(isOpenModal);
-  const [dataCTV, setDataCTV] = useState(isOpenModal);
+
+  const [category, setCategory] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     message: "",
-    userId: "",
+    users: [],
+    type: 1,
+    category: ""
   });
 
-  const fetchApiGetAllCTV = async () => {
-    try {
-      setLoading(true);
-      const res = await getAllCTV();
-      setDataCTV(res?.data);
-    } catch (error) {
-      console.log("error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   const sendNotification = async () => {
+    if(loading) return; 
     try {
       setLoading(true);
       const req = {
         title: formData.title,
         message: formData.message,
-        type: formData?.userId !== "" ? false : true,
+        type: formData.type,
+        users: formData.users,
+        category: formData.category
       };
-      const res = await postSendNotificationByUserId(formData?.userId, req);
+      const res = await postSendNotification(req);
       if (res?.success) {
         toast.success(`Gửi thông báo thành công`);
+        handleCancelModal();
+        setFormData({
+          title: "",
+          message: "",
+          users: [],
+          type: 1,
+          category: ""
+        });
       } else {
-        toast.error(`Lỗi gửi thông báo! Vui lòng thử lại.`);
+        toast.error(res.message);
       }
       setLoading(false);
-      setFormData({ title: "", message: "", userId: "" });
     } catch (error) {
       console.log("error:", error);
+      toast.error(error.message);
       setLoading(false);
     }
   };
@@ -74,9 +80,18 @@ export default function SendNotification({ isOpenModal, handleCancelModal }) {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const optionsUser = useMemo(() => {
+    if(!dataCTV?.length > 0) return [];
+    return dataCTV.map((d) => ({value: d.id, label: d.username}))
+  },[dataCTV])
 
+  const getAllCateList = async () => {
+    const res = await getAllCategoriesList();
+    setCategory(res.data)
+    setFormData({...formData,category: res.data[0].name})
+  }
   useEffect(() => {
-    fetchApiGetAllCTV();
+    getAllCateList()
   }, []);
 
   useEffect(() => {
@@ -132,26 +147,57 @@ export default function SendNotification({ isOpenModal, handleCancelModal }) {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="type">Gửi thông báo</Label>
-              {dataCTV?.length > 0 && (
+              <Label for="type">Loại</Label>
+              {typeSend.length > 0 && (
                 <Input
                   type="select"
-                  name="userId"
-                  id="userId"
-                  value={formData.userId}
+                  name="type"
+                  id="type"
+                  value={formData.type}
                   onChange={handleChange}
                 >
-                  <option value="">Chọn user</option>
-                  {dataCTV?.map((item, i) => (
-                    <option key={i} value={item?._id}>
-                      {item?.username}
+                  {typeSend.map((item, i) => (
+                    <option key={i} value={item?.value}>
+                      {item?.label}
                     </option>
                   ))}
                 </Input>
               )}
             </FormGroup>
+            {formData.type == 2 &&
+              <FormGroup>
+              <Label for="type">Gửi thông báo</Label>
+                <Select
+                    defaultValue={formData.users}
+                    isMulti
+                    name="colors"
+                    options={optionsUser}
+                    onChange={v => formData.users = v}
+                  />
+            </FormGroup>
+            }
+            {formData.type == 3 &&
+              <FormGroup>
+              <Label for="type">Gửi thông báo</Label>
+              {category.length > 0 && (
+                <Input
+                  type="select"
+                  name="category"
+                  id="category"
+                  value={formData.categoryType}
+                  onChange={handleChange}
+                >
+                  {category.map((item, i) => (
+                    <option key={i} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </Input>
+              )}
+            </FormGroup>
+            }
             <Button type="submit" color="primary">
-              Gửi
+               {loading?<Spinner  />: "Gửi"} 
             </Button>
             <Button
               color="secondary"
@@ -167,3 +213,18 @@ export default function SendNotification({ isOpenModal, handleCancelModal }) {
     </>
   );
 }
+
+const typeSend = [
+  {
+    value: 1,
+    label: "Gửi all"
+  },
+  {
+    value: 2,
+    label: "Chọn CTV"
+  },
+  {
+    value: 3,
+    label: "Chọn CTV chuyên mục"
+  },
+]
