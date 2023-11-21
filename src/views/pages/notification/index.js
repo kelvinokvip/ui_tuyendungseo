@@ -6,22 +6,17 @@ import {
   CardHeader,
   Col,
   Container,
-  Popover,
-  PopoverBody,
-  PopoverHeader,
   Row,
   Table,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   CardFooter,
 } from "reactstrap";
 import ReactPaginate from "react-paginate";
-
+import { Modal } from 'antd';
 import { BsTrashFill } from "react-icons/bs";
 import { getAllNotification, deleteNotificationById } from "api/notification";
 import SendNotification from "./sendNotification";
 import { toast } from "react-toastify";
+import { getAllCTV } from "api/user";
 
 export default function Notification() {
   const [loading, setLoading] = useState(false);
@@ -33,16 +28,29 @@ export default function Notification() {
   const [pageIndex, setPageIndex] = useState(1);
   const [totalItem, setTotalItem] = useState(0);
   const [totalPage, setTotalPage] = useState(1);
-  const toggle = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleDelete = (id) => {
+  const [dataCTV, setDataCTV] = useState([]);
+  const handleDelete = () => {
+    if(isOpen){
+      fetchApideleteNotificationById(isOpen);
+      setIsOpen(false);
+    }
     // Gọi hàm onDelete khi người dùng xác nhận xóa
-    fetchApideleteNotificationById(id);
-    setIsOpen(false);
+  
   };
-
+  const fetchApiGetAllCTV = async () => {
+    try {
+      setLoading(true);
+      const res = await getAllCTV();
+      setDataCTV(res?.data);
+    } catch (error) {
+      console.log("error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchApiGetAllCTV();
+  }, []);
   const fetchApideleteNotificationById = async (id) => {
     try {
       setLoading(true);
@@ -86,13 +94,18 @@ export default function Notification() {
   };
 
   const handlePageChange = (e) => {
-    console.log(e, "jaskdjklasdl");
-    if (e?.selected + 1 !== 1) {
-      setPageIndex(e.selected + 1);
-    } else {
-      fetchApiGetAllNotification();
-    }
+    setPageIndex(e.selected + 1);
   };
+
+  const renderUsers = (users) => {
+    const names = []
+    users.forEach(user => {
+      const item = dataCTV.find(i => i.id == user);
+      if(item) names.push(item.username);
+    })
+    return names.join(', ');
+  }
+
   return (
     <>
       <SimpleHeader name="Thông báo" parentName="Quản lí thông báo" />
@@ -123,8 +136,11 @@ export default function Notification() {
                         <th className="sort" scope="col">
                           Nội dung
                         </th>
-                        <th className="sort" scope="col">
+                        {/* <th className="sort" scope="col">
                           Trạng thái
+                        </th> */}
+                        <th className="sort" scope="col">
+                          Người nhận
                         </th>
                         <th className="sort" scope="col">
                           Hành động
@@ -135,35 +151,17 @@ export default function Notification() {
                       <tbody className="list">
                         <>
                           {dataNotification?.map((item, k) => (
-                            <tr key={k}>
+                            <tr key={item._id}>
                               <td>{item.title}</td>
                               <td>{item.message}</td>
                               <td>
-                                {item.type === true ? "public" : "private"}
+                                {item.type == 1 ? "all user" : item.type == 2?renderUsers(item.userIds): `Chuyên mục ${item.category}`}
                               </td>
                               <td className="table-actions">
-                                <Button id="deletePopover" onClick={toggle}>
+                                <Button onClick={() => setIsOpen(item._id)}>
                                   <BsTrashFill className="text-warning" />
                                 </Button>
-                                <Popover
-                                  placement="auto"
-                                  placementPrefix="center"
-                                  isOpen={isOpen}
-                                  target="deletePopover"
-                                  toggle={toggle}
-                                >
-                                  <PopoverHeader>
-                                    Bạn có chắc chắn muốn xóa?
-                                  </PopoverHeader>
-                                  <PopoverBody>
-                                    <Button
-                                      color="danger"
-                                      onClick={() => handleDelete(item?._id)}
-                                    >
-                                      Xác nhận
-                                    </Button>
-                                  </PopoverBody>
-                                </Popover>
+            
                               </td>
                             </tr>
                           ))}
@@ -171,7 +169,9 @@ export default function Notification() {
                       </tbody>
                     )}
                   </Table>
-
+                  <Modal title="Basic Modal" open={isOpen} onOk={handleDelete} onCancel={()=> setIsOpen(false)}>
+                    <p>Bạn có chắc chắn muốn xóa?</p>
+                  </Modal>
                   <CardFooter className="py-4">
                     <ReactPaginate
                       className="react-paginate"
@@ -194,6 +194,7 @@ export default function Notification() {
         title={title}
         isOpenModal={isOpenModal}
         handleCancelModal={() => handleCancelModal()}
+        dataCTV={dataCTV}
       />
     </>
   );
