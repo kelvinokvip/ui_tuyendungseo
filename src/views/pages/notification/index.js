@@ -152,8 +152,8 @@ export default function Notification() {
                         <>
                           {dataNotification?.map((item, k) => (
                             <tr key={item._id}>
-                              <td>{item.title}</td>
-                              <td>{item.message}</td>
+                              <td style={{whiteSpace: "wrap"}}>{item.title}</td>
+                              <td style={{whiteSpace: "wrap"}} dangerouslySetInnerHTML={{__html: item.message}}></td>
                               <td>
                                 {item.type == 1 ? "all user" : item.type == 2?renderUsers(item.userIds): `Chuyên mục ${item.category}`}
                               </td>
