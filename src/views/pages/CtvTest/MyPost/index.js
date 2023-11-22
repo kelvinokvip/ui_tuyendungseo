@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { useTimer } from "react-timer-hook";
 import moment from "moment";
 import DetailPost from "./Details";
+import { CalculateTime } from "function/calculateTime";
 //api
 const Filter = ({ keyword, setKeyword, options, setStatus, status }) => {
   return (
@@ -182,6 +183,9 @@ const MyPost = () => {
                             Mô tả
                           </th>
                           <th className="sort" scope="col">
+                            Tổng thời gian làm bài
+                          </th>
+                          <th className="sort" scope="col">
                             Từ khóa
                           </th>
                           <th className="sort" scope="col">
@@ -201,6 +205,7 @@ const MyPost = () => {
                                   ? `${item?.description.slice(0, 50)}...`
                                   : item?.description}
                               </td>
+                              <td align="center">{CalculateTime(item.receive?.receiveTime, item.receive?.finishTime)}</td>
                               <td>{item?.keywords?.map((item1) => item1)}</td>
                               <td>
                                 {item.status !== 0 ? (

@@ -112,8 +112,8 @@ const Ctv = () => {
             keyword={keyword}
             // options={options}
             setKeyword={setKeyword}
-            // setStatus={setStatus}
-            // status={status}
+          // setStatus={setStatus}
+          // status={status}
           />
         }
       />
@@ -176,7 +176,15 @@ const Ctv = () => {
                             </td>
                             <td>{item?.email} </td>
                             <td>{item?.acceptPost}</td>
-                            <td>Đá gà</td>
+                            <td>
+                              <ul>
+                                {item?.category?.map((item, index) => {
+                                  return (
+                                    <li key={index}>{item?.name}</li>
+                                  )
+                                })}
+                              </ul>
+                            </td>
                             <td>{options[item?.status]}</td>
                             <td className="table-actions">
                               <a

@@ -66,7 +66,7 @@ function Login() {
     if (res.success) {
       navigate("/admin/test-post");
     } else {
-      toast.warning("Sai tài khoản hoặc mật khẩu");
+      toast.warning(res.message || "Sai tài khoản hoặc mật khẩu");
     }
   };
   // logic login with google
@@ -224,7 +224,7 @@ function Login() {
                 <a
                   className="text-light"
                   href="/auth/register"
-                  // onClick={(e) => e.preventDefault()}
+                // onClick={(e) => e.preventDefault()}
                 >
                   <small>Tạo tài khoản mới</small>
                 </a>

@@ -56,6 +56,7 @@ function Category() {
   const [dataUpdate, setDataUpdate] = useState({});
   const [loading, setLoading] = useState(true);
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
+
   const handleGetCategoryList = async () => {
     setLoading(true);
     const res = await getCategoryList(pageSize, pageIndex);
@@ -185,6 +186,7 @@ function Category() {
                                             id: item?._id,
                                             name: item?.name,
                                             description: item?.description,
+                                            users: item?.users,
                                           });
                                           setTitle("Cập nhật");
                                           setIsOpenModal(true);
@@ -201,6 +203,7 @@ function Category() {
                                               id: item?._id,
                                               name: item?.name,
                                               description: item?.description,
+                                              users: item?.users,
                                             });
                                           }}
                                         />

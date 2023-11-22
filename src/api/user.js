@@ -15,8 +15,8 @@ export async function getPagingCtv(pageSize = 10, pageIndex = 1, search = "") {
 }
 
 //Update ctv status
-export async function updateCtvStatus(id, status) {
-  const res = await getInstance().put(`/user/ctv/${id}`, { status });
+export async function updateCtvStatus(id, status, isVerify) {
+  const res = await getInstance().put(`/user/ctv/${id}`, { status, isVerify });
   return res?.data;
 }
 

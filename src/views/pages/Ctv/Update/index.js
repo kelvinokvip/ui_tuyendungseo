@@ -32,10 +32,21 @@ const UpdateCTV = ({
 }) => {
   const [isOpen, setIsOpen] = useState(isOpenUpdateModal);
   const [status, setStatus] = useState("");
+  const [isVerify, setIsVerify] = useState(0);
+
+  const handelStatus = (value) => {
+    setStatus(value);
+    if (value == 1) {
+      //IsVerify tài khoản đã được duyệt không cho ctv login
+      setIsVerify(0)
+    } else if (value == 0) {
+      setIsVerify(1)
+    }
+  }
 
   const handleUpdateCtv = async () => {
     try {
-      const res = await updateCtvStatus(ctvDataDetail?._id, status);
+      const res = await updateCtvStatus(ctvDataDetail?._id, status, isVerify);
       if (res?.success) {
         toast.success(res?.message);
         handleUpdateSuccess();
@@ -92,7 +103,7 @@ const UpdateCTV = ({
                 //       : keywordSearch,
                 // }}
                 data={options}
-                onChange={(e) => setStatus(e.target.value)}
+                onChange={(e) => handelStatus(e.target.value)}
               />
             </Col>
           </Row>

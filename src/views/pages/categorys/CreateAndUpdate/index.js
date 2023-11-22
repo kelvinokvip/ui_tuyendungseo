@@ -1,6 +1,8 @@
 // export default UpdateCategory;
+import { Select } from "antd";
 import { createCategory } from "api/category";
 import { updateCategory } from "api/category";
+import { getAllCTV } from "api/user";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 // reactstrap components
@@ -17,11 +19,14 @@ const UpdateCategory = ({
   // const [form] = Form.useForm();
   const [name, setName] = useState(dataUpdate?.name);
   const [description, setDescription] = useState(dataUpdate?.description);
+  const [listUser, setListUser] = useState([]);
+  const [users, setUsers] = useState([])
 
   useEffect(() => {
     setOpen(isOpenModal);
     setName(dataUpdate?.name);
     setDescription(dataUpdate?.description);
+    loadUser();
   }, [isOpenModal]);
   //   //logic
   const onFinish = async () => {
@@ -32,6 +37,7 @@ const UpdateCategory = ({
     const data = {
       name,
       description,
+      users
     };
     if (Object.keys(dataUpdate)?.length) {
       const res = await updateCategory(dataUpdate?.id, data);
@@ -44,6 +50,38 @@ const UpdateCategory = ({
     handleCancelModal(false);
     setOpen(false);
   };
+
+  const loadUser = async () => {
+    const res = await getAllCTV();
+    if (res?.success) {
+      const data = res?.data.map((item) => {
+        return {
+          label: item.username,
+          value: item.id,
+        }
+      });
+
+      mapUserId(res?.data);
+      setListUser(data);
+    }
+  };
+
+  const mapUserId = (data) => {
+    const userIds = [];
+    if (dataUpdate?.users) {
+      data.forEach(item => {
+        if (dataUpdate?.users.find(val => val == item.id)) {
+          userIds.push(item.id)
+        }
+      });
+      setUsers(userIds);
+    }
+  }
+
+  const handleUser = (value) => {
+    setUsers(value);
+  };
+
   return (
     <>
       <Modal
@@ -93,6 +131,28 @@ const UpdateCategory = ({
                 id="example-text-input"
                 type="text"
                 onChange={(e) => setDescription(e.target.value)}
+              />
+            </FormGroup>
+            <FormGroup>
+              <label
+                className="form-control-label"
+                htmlFor="example-text-input"
+              >
+                CTV
+              </label>
+              <Select
+                mode="tags"
+                style={{
+                  width: '100%',
+                }}
+                value={users}
+                placeholder="Tags Mode"
+                onChange={(e) => handleUser(e)}
+                options={listUser}
+                filterOption={(input, user) => (user?.label ?? '').includes(input)}
+                filterSort={(userA, userB) =>
+                  (userA?.label ?? '').toLowerCase().localeCompare((userB?.label ?? '').toLowerCase())
+                }
               />
             </FormGroup>
           </Form>
