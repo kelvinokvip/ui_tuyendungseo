@@ -111,7 +111,7 @@ const TestPost = () => {
 
   const statusOptions = [
     {
-      title: "Đã duyệt",
+      title: "Đạt",
       value: 2,
       color: "green",
     },
@@ -121,13 +121,18 @@ const TestPost = () => {
       color: "blue",
     },
     {
-      title: "Không duyệt",
+      title: "Không đạt",
       value: -2,
       color: "red",
     },
     {
       title: "Hết hạn",
       value: -1,
+      color: "red",
+    },
+    {
+      title: "Lọc theo thời gian nộp bài",
+      value: 5,
       color: "red",
     },
     {
@@ -187,6 +192,9 @@ const TestPost = () => {
                             Mô tả
                           </th>
                           <th className="sort" scope="col">
+                            Chuyên mục
+                          </th>
+                          <th className="sort" scope="col">
                             Từ khóa
                           </th>
                           <th className="sort" scope="col">
@@ -213,6 +221,7 @@ const TestPost = () => {
                                 ? `${item?.description.slice(0, 50)}...`
                                 : item?.description}
                             </td>
+                            <td>{item?.category}</td>
                             <td>{item?.keywords?.map((item1) => item1)}</td>
                             <td>{item.receive?.user?.username}</td>
                             <td align="center">{CalculateTime(item.receive?.receiveTime, item.receive?.finishTime)}</td>
