@@ -11,6 +11,7 @@ const DetailPost = ({
   isOpenDetailPost,
   detailPostData,
   handleCloseModalDetailPost,
+  isShowComfirm = true,
 }) => {
   const [isOpenModalReceivePost, setIsOpenModalReceivePost] = useState(false);
 
@@ -78,6 +79,7 @@ const DetailPost = ({
           </Row>
         </div>
         <div className="modal-footer">
+          {isShowComfirm &&
           <Button
             color="primary"
             data-dismiss="modal"
@@ -86,6 +88,8 @@ const DetailPost = ({
           >
             Nhận bài viết
           </Button>
+          }
+
           <Button
             color="secondary"
             data-dismiss="modal"
