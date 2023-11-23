@@ -184,7 +184,7 @@ export default function SendNotification({ isOpenModal, handleCancelModal, dataC
                   type="select"
                   name="category"
                   id="category"
-                  value={formData.categoryType}
+                  value={formData.category}
                   onChange={handleChange}
                 >
                   {category.map((item, i) => (

@@ -83,7 +83,7 @@ const routes = [
       },
       {
         path: "/post",
-        name: "Bài viết",
+        name: "Order bài test",
         miniName: "E",
         component: <Posts />,
         layout: "/admin",
