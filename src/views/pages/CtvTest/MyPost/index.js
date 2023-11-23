@@ -26,8 +26,9 @@ import { useTimer } from "react-timer-hook";
 import moment from "moment";
 import DetailPost from "./Details";
 import { CalculateTime } from "function/calculateTime";
+import DetailEntity from "./DetailEntity";
 //api
-const Filter = ({ keyword, setKeyword, options, setStatus, status }) => {
+const Filter = ({ keyword, setKeyword, options, setStatus, status, isOrder, setIsOrder, optionsOrders }) => {
   return (
     <>
       <Row>
@@ -45,7 +46,21 @@ const Filter = ({ keyword, setKeyword, options, setStatus, status }) => {
             }}
             data={options}
             onChange={(e) =>
-              setStatus(e.target.value === "all" ? "" : e.target.value)
+              setIsOrder(e.target.value === "all" ? "" : e.target.value)
+            }
+          />
+        </Col>
+        <Col className="col-2">
+          <Label>Loại bài</Label>
+          <Select2
+            className="form-control"
+            defaultValue={isOrder}
+            options={{
+              placeholder: isOrder === "" ? "Tất cả" : isOrder,
+            }}
+            data={optionsOrders}
+            onChange={(e) =>
+              setIsOrder(e.target.value === "all" ? "" : e.target.value)
             }
           />
         </Col>
@@ -64,6 +79,7 @@ const MyPost = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const [keyword, setKeyword] = useState("");
   const [status, setStatus] = useState("");
+  const [isOrder, setIsOrder] = useState("");
   const keywordDebouce = useDebounce(keyword, 500);
 
   const handleGetMyPostList = async () => {
@@ -72,7 +88,8 @@ const MyPost = () => {
       pageSize,
       pageIndex,
       keywordDebouce,
-      status
+      status,
+      isOrder
     );
     setDataPostsList(res?.data);
     setTotalPages(res?.totalPages);
@@ -80,7 +97,7 @@ const MyPost = () => {
   };
   useEffect(() => {
     handleGetMyPostList();
-  }, [pageIndex, pageSize, keywordDebouce, status]);
+  }, [pageIndex, pageSize, keywordDebouce, status, isOrder]);
 
   const options = [
     { id: "all", text: "Tất cả" },
@@ -97,6 +114,12 @@ const MyPost = () => {
     1: "Hoàn thành",
     2: "Đã duyệt",
   };
+
+  const optionsOrders = [
+    { id: "all", text: "Tất cả" },
+    { id: "false", text: "Bài viết content" },
+    { id: "true", text: "Đang viết entity" },
+  ]
   function MyTimer({ expiryTimestamp }) {
     const { seconds, minutes, hours } = useTimer({
       expiryTimestamp,
@@ -147,6 +170,9 @@ const MyPost = () => {
             setKeyword={setKeyword}
             setStatus={setStatus}
             status={status}
+            isOrder={isOrder}
+            setIsOrder={setIsOrder}
+            optionsOrders={optionsOrders}
           />
         }
       />
@@ -226,23 +252,35 @@ const MyPost = () => {
                                 )}
                               </td>
                               <td className="table-actions">
-                                {item.status === 0 && (
-                                  <>
-                                    <i
-                                      className="fa-sharp fa-solid fa-arrow-right"
-                                      onClick={navigate(
-                                        `/admin/my-test/${item?._id}`
-                                      )}
-                                    ></i>
-
-                                    {/* <UncontrolledTooltip delay={0}>
-                                      Viết tiếp
-                                    </UncontrolledTooltip> */}
-                                  </>
-                                )}
-                                {item.status !== 0 && (
-                                  <DetailPost id={item?._id} />
-                                )}
+                                {
+                                  item.status === 0 ?
+                                    <>
+                                      {
+                                        item.isOrder === true ?
+                                          <i
+                                            className="fa-sharp fa-solid fa-arrow-right"
+                                            onClick={navigate(
+                                              `/admin/my-test-entity`
+                                            )}></i>
+                                          :
+                                          <i
+                                            className="fa-sharp fa-solid fa-arrow-right"
+                                            onClick={navigate(
+                                              `/admin/my-test/${item?._id}`
+                                            )}
+                                          ></i>
+                                      }
+                                    </>
+                                    :
+                                    <>
+                                      {
+                                        item.isOrder === true ?
+                                          <DetailEntity id={item?._id} />
+                                          :
+                                          <DetailPost id={item?._id} />
+                                      }
+                                    </>
+                                }
                               </td>
                             </tr>
                           </>

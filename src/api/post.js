@@ -12,9 +12,9 @@ export async function getReceivePost(id) {
 }
 
 //get my post
-export async function getMyPostList(pageSize, pageIndex, keyword, status) {
+export async function getMyPostList(pageSize, pageIndex, keyword, status, isOrder) {
   const res = await getInstance().get(
-    `/post/my-post?pageSize=${pageSize}&pageIndex=${pageIndex}&search=${keyword}&status=${status}`
+    `/post/my-post?pageSize=${pageSize}&pageIndex=${pageIndex}&search=${keyword}&status=${status}&isOrder=${isOrder}`
   );
   return res?.data;
 }
