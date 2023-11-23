@@ -2,7 +2,7 @@ import { getInstance } from "helper/axios";
 
 //get random
 export async function getRandomPostsList(category) {
-  const res = await getInstance().get(`/post/random?category=${category}`);
+  const res = await getInstance().get(`/order-post/random?category=${category}`);
   return res?.data;
 }
 //get receive post
