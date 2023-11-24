@@ -46,13 +46,18 @@ import {
 } from "reactstrap";
 // core components
 import AuthHeader from "components/Headers/AuthHeader.js";
+import Select2 from "react-select2-wrapper";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Register() {
+  const navigate = useNavigate();
   const { signup, loginWithGoogle } = useContext(AuthContext);
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [isUser, setIsUser] = React.useState(0);
 
   const [focusedName, setfocusedName] = React.useState(false);
   const [focusedEmail, setfocusedEmail] = React.useState(false);
@@ -65,17 +70,30 @@ function Register() {
       lastName,
       username,
       password,
+      isUser,
     };
     const res = await signup(data);
+    if (res?.success) {
+      toast.success("tạo tài khoản thành công vui lòng đăng nhập")
+      navigate("/auth/login");
+    } else {
+      toast.error(res?.message || "tạo tài khoản không hành công")
+    }
   };
 
   // logic login with google
   const loginGoogle = useGoogleLogin({
     scope:
       "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid",
-    onSuccess: (token) => loginWithGoogle(token.access_token),
+    onSuccess: (token) => loginWithGoogle(token.access_token, isUser),
     overrideScope: true,
   });
+
+  const optionsUser = [
+    { id: "0", text: "CTV content" },
+    { id: "1", text: "CTV entity" },
+  ]
+
   return (
     <>
       <AuthHeader
@@ -213,6 +231,26 @@ function Register() {
                       />
                     </InputGroup>
                   </FormGroup>
+                  <FormGroup
+                    className={classnames({
+                      focused: focusedPassword,
+                    })}
+                  >
+                    <InputGroup className="input-group-merge input-group-alternative">
+                      <Select2
+                        className="form-control"
+                        defaultValue={isUser}
+                        data={optionsUser}
+                        options={{
+                          placeholder: isUser === 0 ? "CTV content" : isUser,
+                        }}
+                        onChange={(e) => {
+                          setIsUser(e.target.value)
+                        }
+                        }
+                      />
+                    </InputGroup>
+                  </FormGroup>
                   {/* <div className="text-muted font-italic">
                     <small>
                       password strength:{" "}
@@ -274,7 +312,7 @@ function Register() {
                 <a
                   className="text-light"
                   href="/auth/login"
-                  // onClick={(e) => e.preventDefault()}
+                // onClick={(e) => e.preventDefault()}
                 >
                   <small>Đăng nhập</small>
                 </a>

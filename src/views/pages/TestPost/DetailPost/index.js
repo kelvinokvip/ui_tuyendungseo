@@ -75,7 +75,7 @@ const DetailPost = ({ id, refresh }) => {
       >
         <div className="modal-header">
           <h5 className="modal-title" id="exampleModalLabel">
-            Chi tiết bài viết
+            Chi tiết bài test
           </h5>
           <button
             aria-label="Close"
@@ -99,21 +99,28 @@ const DetailPost = ({ id, refresh }) => {
                 Mô tả: <strong className="h4">{data?.description}</strong>
               </p>
             </Col>
-            <Col xs="12">
-              <p style={{ float: "left" }}>Từ khóa chính:</p>
-              {data?.keywords?.map((item) => (
-                <label className="h4" style={{ marginLeft: "10px" }}>
-                  {item}
-                </label>
-              ))}
-            </Col>
-            {data?.word && (
-              <Col xs="12">
-                <p>
-                  Số từ: <strong className="h4">{data?.word}</strong>
-                </p>
-              </Col>
-            )}
+            {!data?.isOrder ?
+              <>
+                <Col xs="12">
+                  <p style={{ float: "left" }}>Từ khóa chính:</p>
+                  {data?.keywords?.map((item) => (
+                    <label className="h4" style={{ marginLeft: "10px" }}>
+                      {item}
+                    </label>
+                  ))}
+                </Col>
+                {data?.word && (
+                  <Col xs="12">
+                    <p>
+                      Số từ: <strong className="h4">{data?.word}</strong>
+                    </p>
+                  </Col>
+                )}
+              </>
+              :
+              <></>
+            }
+
 
             <Col xs="12">
               <p>

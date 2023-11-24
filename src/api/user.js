@@ -7,9 +7,9 @@ export async function getRandomPostsList(category) {
 }
 
 //get paging
-export async function getPagingCtv(pageSize = 10, pageIndex = 1, search = "") {
+export async function getPagingCtv(pageSize = 10, pageIndex = 1, search = "", isUser = "") {
   const res = await getInstance().get(
-    `/user/ctv?pageSize=${pageSize}&pageIndex=${pageIndex}&search=${search}`
+    `/user/ctv?pageSize=${pageSize}&pageIndex=${pageIndex}&search=${search}&isUser=${isUser}`
   );
   return res?.data;
 }

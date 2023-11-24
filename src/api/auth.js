@@ -21,9 +21,10 @@ export async function getLoggedUser() {
   return res?.data;
 }
 //đăng nhập với google
-export const signInWithGoogle = async ({ tokenId }) => {
+export const signInWithGoogle = async ({ tokenId, isUser }) => {
   const res = await getInstanceCheckAuth().post("/loginWithGoogle", {
     tokenId,
+    isUser
   });
   return res?.data;
 };

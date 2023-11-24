@@ -9,6 +9,7 @@ import {
   CardHeader,
   Col,
   Container,
+  Label,
   Pagination,
   PaginationItem,
   PaginationLink,
@@ -23,11 +24,12 @@ import DetailPost from "./DetailPost";
 import { EnterHelper } from "utils/EnterHelper";
 import { CalculateTime } from "function/calculateTime";
 
-const Filter = ({ options, setStatus, status }) => {
+const Filter = ({ options, setStatus, status, isOrder, setIsOrder, optionsOrders }) => {
   return (
     <>
       <Row>
         <Col className="col-3">
+          <Label>Trạng thái</Label>
           <Select2
             className="form-control"
             options={{
@@ -43,6 +45,20 @@ const Filter = ({ options, setStatus, status }) => {
                 text: item.title,
               };
             })}
+          />
+        </Col>
+        <Col className="col-2">
+          <Label>Loại bài</Label>
+          <Select2
+            className="form-control"
+            defaultValue={isOrder}
+            options={{
+              placeholder: isOrder === "" ? "Tất cả" : isOrder,
+            }}
+            data={optionsOrders}
+            onChange={(e) =>
+              setIsOrder(e.target.value === "all" ? "" : e.target.value)
+            }
           />
         </Col>
       </Row>
@@ -80,6 +96,7 @@ const TestPost = () => {
   const [keyword, setKeyword] = useState("");
   const [status, setStatus] = useState(1);
   const keywordDebouce = useDebounce(keyword, 500);
+  const [isOrder, setIsOrder] = useState("");
   //
   //handle about detail post
 
@@ -95,7 +112,8 @@ const TestPost = () => {
         pageSize,
         pageIndex,
         keywordDebouce,
-        status
+        status,
+        isOrder
       );
       setDataPostsList(res?.data);
       setTotalPages(res?.totalPages);
@@ -107,7 +125,7 @@ const TestPost = () => {
   };
   useEffect(() => {
     handleGetPagingPost();
-  }, [pageSize, pageIndex, status]);
+  }, [pageSize, pageIndex, status, isOrder]);
 
   const statusOptions = [
     {
@@ -142,6 +160,11 @@ const TestPost = () => {
     },
   ];
 
+  const optionsOrders = [
+    { id: "all", text: "Tất cả" },
+    { id: "false", text: "Bài viết content" },
+    { id: "true", text: "Bài viết entity" },
+  ]
   return (
     <>
       <SimpleHeader
@@ -156,6 +179,9 @@ const TestPost = () => {
             setStatus={setStatus}
             status={status}
             options={statusOptions}
+            isOrder={isOrder}
+            setIsOrder={setIsOrder}
+            optionsOrders={optionsOrders}
           />
         }
       />

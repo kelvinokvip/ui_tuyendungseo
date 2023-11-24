@@ -118,7 +118,7 @@ const MyPost = () => {
   const optionsOrders = [
     { id: "all", text: "Tất cả" },
     { id: "false", text: "Bài viết content" },
-    { id: "true", text: "Đang viết entity" },
+    { id: "true", text: "Bài viết entity" },
   ]
   function MyTimer({ expiryTimestamp }) {
     const { seconds, minutes, hours } = useTimer({

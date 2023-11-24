@@ -2,6 +2,8 @@ import { getPostById } from "api/post";
 import moment from "moment";
 import { useState } from "react";
 import { Button, Col, Modal, Row } from "reactstrap";
+import "./styles.scss"
+
 const DetailEntity = ({ id, refresh }) => {
   const [data, setData] = useState();
   const [show, setShow] = useState(false);
@@ -66,6 +68,11 @@ const DetailEntity = ({ id, refresh }) => {
             <Col xs="12">
               <p style={{ overflow: "auto" }}>
                 Mô tả: <strong className="h4">{data?.description}</strong>
+              </p>
+            </Col>
+            <Col xs="12">
+              <p style={{ overflow: "auto" }}>
+                Nội dung: <strong className="h4 content-entity" dangerouslySetInnerHTML={{ __html: data?.receive?.content }}></strong>
               </p>
             </Col>
             <Col xs="12">

@@ -205,7 +205,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
 }
 
 AdminNavbar.defaultProps = {
-  toggleSidenav: () => {},
+  toggleSidenav: () => { },
   sidenavOpen: false,
   theme: "dark",
 };
