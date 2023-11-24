@@ -58,3 +58,13 @@ export async function deletePostById(id, data) {
   const res = await getInstance().delete(`/post/${id}`, data);
   return res?.data;
 }
+// 
+export async function receiveRandomPost(category) {
+  const res = await getInstance().post(`/post/receive/random`, {category});
+  return res?.data;
+}
+
+export async function updateDeadlinePost(id) {
+  const res = await getInstance().put(`/post/update-deadline/${id}`);
+  return res?.data;
+}

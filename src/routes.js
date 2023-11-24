@@ -48,6 +48,7 @@ import Ctv from "views/pages/Ctv";
 import TestPost from "views/pages/TestPost";
 import Notification from "views/pages/notification";
 import Posts from "views/pages/posts";
+import ConfirmTestContent from "views/pages/ConfirmTestContent";
 
 const routes = [
   {
@@ -93,16 +94,16 @@ const routes = [
   },
   {
     collapse: true,
-    name: "Bài test",
+    name: "Bài test CTV content",
     icon: "ni ni-shop text-primary",
     state: "B",
     permission: "post-test",
     views: [
       {
-        path: "/list-test",
-        name: "Danh sách bài test",
+        path: "/confirm-test",
+        name: "Tiến hành bài test",
         miniName: "D",
-        component: <CtvTest />,
+        component: <ConfirmTestContent />,
         layout: "/admin",
         permission: "post-test",
       },
