@@ -20,8 +20,9 @@ import LoadingSpin from "react-loading-spin";
 import { getPagingCtv } from "api/user";
 import { BsPencil } from "react-icons/bs";
 import UpdateCTV from "./Update";
+import Select2 from "react-select2-wrapper";
 
-const Filter = ({ keyword, setKeyword }) => {
+const Filter = ({ keyword, setKeyword, isUser, setIsUser, optionUsers }) => {
   return (
     <>
       <Row>
@@ -33,6 +34,20 @@ const Filter = ({ keyword, setKeyword }) => {
             onChange={(e) => {
               setKeyword(e.target.value);
             }}
+          />
+        </Col>
+        <Col className="col-2">
+          <Label>Loại tài khoản</Label>
+          <Select2
+            className="form-control"
+            defaultValue={isUser}
+            options={{
+              placeholder: isUser === "" ? "Tất cả" : isUser,
+            }}
+            data={optionUsers}
+            onChange={(e) =>
+              setIsUser(e.target.value === "all" ? "" : e.target.value)
+            }
           />
         </Col>
       </Row>
@@ -63,6 +78,13 @@ const options = {
   0: "Chưa duyệt",
   1: "Đã duyệt",
 };
+
+const optionUsers = [
+  { id: "all", text: "Tất cả" },
+  { id: "0", text: "CTV content" },
+  { id: "1", text: "CTV entity" },
+]
+
 const Ctv = () => {
   const [loading, setLoading] = useState(false);
   const [dataCtvList, setDataCtvList] = useState([]);
@@ -74,6 +96,7 @@ const Ctv = () => {
   const keywordDebouce = useDebounce(keyword, 500);
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
   const [ctvDataDetail, steCtvDataDetail] = useState({});
+  const [isUser, setIsUser] = useState("");
   //
   const handleCloseModal = () => {
     setIsOpenUpdateModal(false);
@@ -86,7 +109,7 @@ const Ctv = () => {
   const handleGetPagingCtv = async () => {
     try {
       setLoading(true);
-      const res = await getPagingCtv(pageSize, pageIndex, keywordDebouce);
+      const res = await getPagingCtv(pageSize, pageIndex, keywordDebouce, isUser);
       setDataCtvList(res?.data);
       setTotalPages(res?.totalPages);
     } catch (error) {
@@ -95,9 +118,10 @@ const Ctv = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     handleGetPagingCtv();
-  }, [pageSize, pageIndex, keywordDebouce]);
+  }, [pageSize, pageIndex, keywordDebouce, isUser]);
   return (
     <>
       <SimpleHeader
@@ -112,8 +136,11 @@ const Ctv = () => {
             keyword={keyword}
             // options={options}
             setKeyword={setKeyword}
-          // setStatus={setStatus}
-          // status={status}
+            // setStatus={setStatus}
+            // status={status}
+            isUser={isUser}
+            setIsUser={setIsUser}
+            optionUsers={optionUsers}
           />
         }
       />

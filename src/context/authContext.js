@@ -7,7 +7,6 @@ import {
 } from "api/auth";
 import { getPermissionByRole } from "api/permission";
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 const initialValue = {
   user: {},
@@ -44,32 +43,33 @@ const AuthProvider = ({ children }) => {
     try {
       const permission = await getPermissionByRole();
       setPermission(permission);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   //Signup
   const signup = async (data) => {
     const res = await authSignup(data);
-    if (res?.success) {
-      setUser(res);
-      setToken(res?.jwtToken);
-      localStorage.setItem("accessToken", res?.jwtToken);
-      Cookies.set("refreshToken", res?.refreshToken);
-    }
+    // if (res?.success) {
+    // setUser(res);
+    // setToken(res?.jwtToken);
+    // localStorage.setItem("accessToken", res?.jwtToken);
+    // Cookies.set("refreshToken", res?.refreshToken);
+    // } 
     return res;
   };
 
   //LoginWithGoogle
-  const loginWithGoogle = async (idToken) => {
+  const loginWithGoogle = async (idToken, isUser) => {
     const res = await signInWithGoogle({
       tokenId: idToken,
+      isUser: isUser
     });
     if (res?.success) {
       setUser(res);
       setToken(res?.jwtToken);
-      getPermission();
       localStorage.setItem("accessToken", res?.jwtToken);
       Cookies.set("refreshToken", res?.refreshToken);
+      getPermission();
     }
     return res;
   };

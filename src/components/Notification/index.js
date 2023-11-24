@@ -61,7 +61,7 @@ export default function NotificationUI() {
       )}
       {selectedItem && (
         <ModalNotification
-        notification={selectedItem}
+          notification={selectedItem}
           modal={modal}
           toggle={toggle}
         />

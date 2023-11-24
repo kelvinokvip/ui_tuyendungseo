@@ -49,6 +49,9 @@ import TestPost from "views/pages/TestPost";
 import Notification from "views/pages/notification";
 import Posts from "views/pages/posts";
 import ConfirmTestContent from "views/pages/ConfirmTestContent";
+import OrderEntity from "views/pages/orderEtity";
+import CtvTestEntity from "views/pages/CtvTest/CtvTestEntity";
+import WriteEntity from "views/pages/CtvTest/WriteEntity/WriteEntity";
 
 const routes = [
   {
@@ -84,9 +87,17 @@ const routes = [
       },
       {
         path: "/post",
-        name: "Order bài test",
+        name: "Order bài test content",
         miniName: "E",
         component: <Posts />,
+        layout: "/admin",
+        permission: "admin-post",
+      },
+      {
+        path: "/order-entity",
+        name: "Order bài test entity",
+        miniName: "E",
+        component: <OrderEntity />,
         layout: "/admin",
         permission: "admin-post",
       },
@@ -107,6 +118,14 @@ const routes = [
         layout: "/admin",
         permission: "post-test",
       },
+      // {
+      //   path: "/list-test-entity",
+      //   name: "Danh sách bài test entity",
+      //   miniName: "D",
+      //   component: <CtvTestEntity />,
+      //   layout: "/admin",
+      //   permission: "post-test",
+      // },
       {
         path: "/my-test",
         name: "Bài test của tôi",
@@ -122,6 +141,49 @@ const routes = [
         component: <WritePost />,
         layout: "/admin",
         permission: "post-test",
+        invisible: true,
+      },
+      // {
+      //   path: "/my-test-entity",
+      //   name: "Bài test entity của tôi",
+      //   miniName: "D",
+      //   component: <WriteEntity />,
+      //   layout: "/admin",
+      //   permission: "post-test",
+      //   invisible: true,
+      // },
+    ],
+  },
+  {
+    collapse: true,
+    name: "Bài test",
+    icon: "ni ni-shop text-primary",
+    state: "B",
+    permission: "post-test-entity",
+    views: [
+      {
+        path: "/list-test-entity",
+        name: "Danh sách bài test entity",
+        miniName: "D",
+        component: <CtvTestEntity />,
+        layout: "/admin",
+        permission: "post-test-entity",
+      },
+      {
+        path: "/my-test",
+        name: "Bài test của tôi",
+        miniName: "D",
+        component: <MyPost />,
+        layout: "/admin",
+        permission: "post-test-entity",
+      },
+      {
+        path: "/my-test-entity",
+        name: "Bài test entity của tôi",
+        miniName: "D",
+        component: <WriteEntity />,
+        layout: "/admin",
+        permission: "post-test-entity",
         invisible: true,
       },
     ],

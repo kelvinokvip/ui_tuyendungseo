@@ -2,7 +2,7 @@ import { getInstance } from "helper/axios";
 
 //get random
 export async function getRandomPostsList(category) {
-  const res = await getInstance().get(`/post/random?category=${category}`);
+  const res = await getInstance().get(`/order-post/random?category=${category}`);
   return res?.data;
 }
 //get receive post
@@ -12,9 +12,9 @@ export async function getReceivePost(id) {
 }
 
 //get my post
-export async function getMyPostList(pageSize, pageIndex, keyword, status) {
+export async function getMyPostList(pageSize, pageIndex, keyword, status, isOrder) {
   const res = await getInstance().get(
-    `/post/my-post?pageSize=${pageSize}&pageIndex=${pageIndex}&search=${keyword}&status=${status}`
+    `/post/my-post?pageSize=${pageSize}&pageIndex=${pageIndex}&search=${keyword}&status=${status}&isOrder=${isOrder}`
   );
   return res?.data;
 }
@@ -24,10 +24,11 @@ export async function getPagingPost(
   pageSize = 10,
   pageIndex = 1,
   keyword = "",
-  status = ""
+  status = "",
+  isOrder = ""
 ) {
   const res = await getInstance().get(
-    `/post?pageSize=${pageSize}&pageIndex=${pageIndex}&search=${keyword}&status=${status}`
+    `/post?pageSize=${pageSize}&pageIndex=${pageIndex}&search=${keyword}&status=${status}&isOrder=${isOrder}`
   );
   return res?.data;
 }
