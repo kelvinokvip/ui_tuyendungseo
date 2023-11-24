@@ -87,15 +87,15 @@ const MyPost = () => {
     { id: "-1", text: "Hết hạn" },
     { id: "0", text: "Đang viết" },
     { id: "1", text: "Hoàn thành" },
-    { id: "2", text: "Đã duyệt" },
-    { id: "-2", text: "Không duyệt" },
+    { id: "2", text: "Đạt" },
+    { id: "-2", text: "Không đạt" },
   ];
   const optionsForStatus = {
     "-1": "Hết hạn",
-    "-2": "Không duyệt",
+    "-2": "Không đạt",
     0: "Đang viết",
     1: "Hoàn thành",
-    2: "Đã duyệt",
+    2: "Đạt",
   };
   function MyTimer({ expiryTimestamp }) {
     const { seconds, minutes, hours } = useTimer({

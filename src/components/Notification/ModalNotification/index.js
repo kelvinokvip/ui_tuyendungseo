@@ -21,7 +21,7 @@ export default function ModalNotification({ notification, modal, toggle }) {
   return (
     <Modal isOpen={modal} toggle={toggle}>
       <ModalHeader toggle={toggle}>{notification?.title}</ModalHeader>
-      <ModalBody>{notification?.message}</ModalBody>
+      <ModalBody dangerouslySetInnerHTML={{__html: notification?.message}}></ModalBody>
       <ModalFooter>
         <Button color="warning" onClick={toggle}>
           Cancel

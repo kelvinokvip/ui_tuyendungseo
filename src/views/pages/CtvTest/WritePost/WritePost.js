@@ -84,7 +84,7 @@ const WritePost = () => {
     const res = await startPost(id);
     if (res.success) {
       setShowModalTopic(true)
-      // setTimer(new Date(res?.post?.receive?.deadline));
+      setTimer5p(moment().add(5, "minutes"))
       setIsStart(true);
     }
   };
@@ -111,11 +111,9 @@ const WritePost = () => {
     });
   
     return (
-      <div style={{ textAlign: "center" }}>
-        <div>
+      <span>
           <span>{minutes}</span>:<span>{seconds}</span>
-        </div>
-      </div>
+      </span>
     );
   }
   const handleFinish = async (isExpires = false) => {
@@ -318,15 +316,16 @@ const WritePost = () => {
             <Label>Số từ tối thiểu:</Label>
             <strong className="ml-4">{post?.word}</strong>
           </div>
-          {timer5p && <div>
-            <Label>Điếm ngược tự động bắt đầu làm </Label>
-            <strong className="ml-4">
-              <MyTimer2 expiryTimestamp={timer5p} />         
-            </strong>
-          </div>}
+         
         
         </ModalBody>
         <ModalFooter>
+          {timer5p && <div style={{ textAlign: "center", color: "red", fontSize: 13, marginRight: 20 }}>
+            <span>Điếm ngược tự động bắt đầu làm :</span>
+            <strong className="ml-1">
+              <MyTimer2 expiryTimestamp={timer5p} />         
+            </strong>
+          </div>}
           <Button color="warning" onClick={handleSkip}>
             Bỏ qua
           </Button>

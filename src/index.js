@@ -30,6 +30,7 @@ import "assets/vendor/nucleo/css/nucleo.css";
 // core styles
 import "assets/scss/argon-dashboard-pro-react.scss?v1.2.1";
 import "assets/css/react-paginate.css";
+import "assets/css/global.css";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import AuthProvider from "context/authContext";

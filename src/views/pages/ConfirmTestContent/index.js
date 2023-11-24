@@ -21,6 +21,8 @@ function ConfirmTestContent() {
     if(res.success){
       toast.success(res.message)
       navigate(`/admin/my-test/${res?.newPost?._id}`);
+      localStorage.removeItem("content")
+      localStorage.removeItem("title")
     }else {
       toast.warning(res.message)
     }
