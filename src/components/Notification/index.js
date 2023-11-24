@@ -35,15 +35,27 @@ export default function NotificationUI() {
       {data?.length > 0 && (
         <DropdownMenu right>
           {data?.map((item, k) => (
-            <DropdownItem key={k} header>
-              <p
-                className="text-overflow m-0 font-weight-700 text-blue text-xs "
-                onClick={() => toggle(item)}
-                style={{ cursor: "pointer" }}
-              >
-                {item?.title}
-              </p>
-            </DropdownItem>
+            <>
+            {k !== 0 && <DropdownItem divider />}
+              <DropdownItem key={k} style={{width: 400, whiteSpace: "unset"}} onClick={() => toggle(item)}>
+                <div>
+                  <p
+                    className="m-0 font-weight-700 text-xs "
+
+                    style={{ cursor: "pointer", color: "black", width: "100%"}}
+                  >
+                    {item?.title}
+                  </p>
+                  <span 
+                    style={{width: "100%"}} 
+                    className="text-hidden-2" 
+                    dangerouslySetInnerHTML={{__html: item.message}}>
+                  </span>
+                </div>
+                
+              </DropdownItem>
+            </>
+
           ))}
         </DropdownMenu>
       )}

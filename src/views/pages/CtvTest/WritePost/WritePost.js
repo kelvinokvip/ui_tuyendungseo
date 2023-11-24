@@ -10,6 +10,10 @@ import {
   Container,
   Input,
   Label,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Row,
 } from "reactstrap";
 //CK-Editor
@@ -25,6 +29,9 @@ import moment from "moment";
 import { finishPost } from "api/post";
 import { toast } from "react-toastify";
 import "./styles.scss";
+import { updateDeadlinePost } from "api/post";
+
+
 const WritePost = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -38,20 +45,33 @@ const WritePost = () => {
   const [wordCount, setWordCount] = useState(0);
   const [title, setTitle] = useState(localStorage.getItem("title"));
   const [expires, setExpires] = useState(false);
+  const [showModalTopic, setShowModalTopic] = useState(false);
+  const [timer5p, setTimer5p] = useState(0);
   const handleGetData = async () => {
     const res = await getPostById(id);
     if (!res.success) {
       navigate("/admin/my-test");
     }
     setPost(res?.data);
+
+
     //check expires
     if (res?.data?.receive?.deadline) {
-      if (moment().isAfter(moment(res?.data?.receive?.deadline))) {
+      if (moment().isAfter(moment(res.data.receive.deadline))) {
         setExpires(true);
         navigate("/admin/my-test");
+      }else {
+        //check 5 minutes 
+        const time = moment().add(res.data.timer, "hour") - (moment(res.data.receive.deadline))
+        if ( time < 0) {
+            setTimer5p(moment().add(-time, "milliseconds"))
+            setShowModalTopic(true)
+            setIsStart(true);
+        }else{
+          setTimer(new Date(res.data.receive.deadline));
+          setIsStart(true);
+        }
       }
-      setTimer(new Date(res?.data?.receive?.deadline));
-      setIsStart(true);
     } else {
       setIsStart(false);
     }
@@ -63,7 +83,8 @@ const WritePost = () => {
   const handleStartPost = async () => {
     const res = await startPost(id);
     if (res.success) {
-      setTimer(new Date(res?.post?.receive?.deadline));
+      setShowModalTopic(true)
+      setTimer5p(moment().add(5, "minutes"))
       setIsStart(true);
     }
   };
@@ -83,6 +104,18 @@ const WritePost = () => {
     );
   }
 
+  function MyTimer2({ expiryTimestamp }) {
+    const { seconds, minutes } = useTimer({
+      expiryTimestamp,
+      onExpire: handleSkip,
+    });
+  
+    return (
+      <span>
+          <span>{minutes}</span>:<span>{seconds}</span>
+      </span>
+    );
+  }
   const handleFinish = async (isExpires = false) => {
     const dataReq = {
       content: editorContent,
@@ -90,7 +123,6 @@ const WritePost = () => {
       word: wordCount,
       expires: isExpires,
     };
-    console.log(post?.word);
     if (!isExpires) {
       if (wordCount < post?.word) {
         toast.warning("Bài viết của bạn chưa đạt đủ số từ bài viết!");
@@ -112,10 +144,20 @@ const WritePost = () => {
       toast.error(res?.message);
     }
   };
+  const handleCancel = () => {
+    navigate("/")
+  }
+  const handleSkip = async () => {
+    const res =  await updateDeadlinePost(id);
+    if(res) {
+      setTimer(new Date(res?.post?.receive?.deadline));
+      setShowModalTopic(false);
+    }
+  }
   return (
     <>
       <SimpleHeader name="Bài viết" parentName="Viết bài" />
-      <div className="main-wite-post my-3">
+      {isStart && !showModalTopic  && <div className="main-wite-post my-3">
         <Container fluid>
           <Row>
             <Card className="card-frame" style={{ width: "100%" }}>
@@ -123,6 +165,10 @@ const WritePost = () => {
                 <div>
                   <Label>Tiêu đề:</Label>
                   <strong className="ml-4">{post?.title}</strong>
+                </div>
+                <div>
+                  <Label>Mô tả:</Label>
+                  <strong className="ml-4">{post?.description}</strong>
                 </div>
                 <div>
                   <Label>Chuyên mục:</Label>
@@ -243,12 +289,56 @@ const WritePost = () => {
             </Col>
           </Row>
         </Container>
-      </div>
+      </div>}
+      {showModalTopic && (
+        <Modal isOpen={true} toggle={() => {}}>
+        <ModalHeader>Yêu cầu đề bài</ModalHeader>
+        <ModalBody>
+          <div>
+            <Label>Tiêu đề:</Label>
+            <strong className="ml-4">{post?.title}</strong>
+          </div>
+          <div>
+            <Label>Mô tả:</Label>
+            <strong className="ml-4">{post?.description}</strong>
+          </div>
+          <div>
+            <Label>Chuyên mục:</Label>
+            <strong className="ml-4">{post?.category}</strong>
+          </div>
+          <div>
+            <Label>Từ khóa:</Label>
+            <strong className="ml-4">
+              {post?.keywords?.map((item) => item).toString()}
+            </strong>
+          </div>
+          <div>
+            <Label>Số từ tối thiểu:</Label>
+            <strong className="ml-4">{post?.word}</strong>
+          </div>
+         
+        
+        </ModalBody>
+        <ModalFooter>
+          {timer5p && <div style={{ textAlign: "center", color: "red", fontSize: 13, marginRight: 20 }}>
+            <span>Điếm ngược tự động bắt đầu làm :</span>
+            <strong className="ml-1">
+              <MyTimer2 expiryTimestamp={timer5p} />         
+            </strong>
+          </div>}
+          <Button color="warning" onClick={handleSkip}>
+            Bỏ qua
+          </Button>
+        </ModalFooter>
+      </Modal>
+      )}
       {!isStart && (
         <ReactBSAlert
           warning
-          title="Bấm ok để viết bài, bạn có thời hạn 3 tiếng để hoàn thành bài!"
+          title="Bài test có thời gian giới hạn. Bạn đã sẵn sàng làm bài test ngay bây giờ?"
+          showCancel={true}
           onConfirm={handleStartPost}
+          onCancel={handleCancel}
         />
       )}
     </>
