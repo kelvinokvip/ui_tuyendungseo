@@ -21,6 +21,7 @@ import { finishPost } from "api/post";
 import { toast } from "react-toastify";
 import "./styles.scss";
 import { getRandomEntity } from "api/orderEntity";
+import { startPostEntity } from "api/post";
 
 const WriteEntity = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const WriteEntity = () => {
   };
 
   const handleStartPost = async () => {
-    const res = await startPost(post._id);
+    const res = await startPostEntity(post._id);
     if (res.success) {
       setTimer(new Date(res?.post?.receive?.deadline));
       setIsStart(true);
@@ -112,11 +113,11 @@ const WriteEntity = () => {
               <CardBody>
                 <div>
                   <Label>Tiêu đề:</Label>
-                  <strong className="ml-4">{post?.title}</strong>
+                  {isStart ? <strong className="ml-4">{post?.title}</strong> : <></>}
                 </div>
                 <div>
                   <Label>Link entity:</Label>
-                  <strong className="ml-4">{post?.description}</strong>
+                  {isStart ? <strong className="ml-4">{post?.description}</strong> : <></>}
                 </div>
               </CardBody>
             </Card>

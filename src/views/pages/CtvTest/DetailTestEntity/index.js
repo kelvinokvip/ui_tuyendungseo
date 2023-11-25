@@ -50,7 +50,7 @@ const DetailTestEntity = ({
                         <Col xs="12">
                             <p style={{ overflow: "auto" }}>
                                 <span>Link entity: </span>
-                                <span className="font-weight-bold">test.com</span>
+                                <span className="font-weight-bold">slides.com, speakerdeck.com, audiomack.com</span>
                             </p>
                         </Col>
                     </Row>

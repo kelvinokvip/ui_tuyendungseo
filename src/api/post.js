@@ -43,6 +43,11 @@ export async function startPost(id) {
   return res?.data;
 }
 
+export async function startPostEntity(id) {
+  const res = await getInstance().put(`/post/start-entity/${id}`);
+  return res?.data;
+}
+
 export async function finishPost(id, data) {
   const res = await getInstance().put(`/post/finish/${id}`, data);
   return res?.data;
@@ -61,7 +66,7 @@ export async function deletePostById(id, data) {
 }
 // 
 export async function receiveRandomPost(category) {
-  const res = await getInstance().post(`/post/receive/random`, {category});
+  const res = await getInstance().post(`/post/receive/random`, { category });
   return res?.data;
 }
 
