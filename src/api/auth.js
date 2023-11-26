@@ -28,3 +28,14 @@ export const signInWithGoogle = async ({ tokenId, isUser }) => {
   });
   return res?.data;
 };
+
+export async function sendCodeEmail(email) {
+  try {
+    console.log("Sending code email")
+    const res = await getInstance().post(`/sendCodeEmail`, {email: email});
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+
+}

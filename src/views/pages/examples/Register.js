@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 // nodejs library that concatenates classes
 import classnames from "classnames";
@@ -49,6 +49,9 @@ import AuthHeader from "components/Headers/AuthHeader.js";
 import Select2 from "react-select2-wrapper";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { sendCodeEmail } from "api/auth";
+import { useTimer } from "react-timer-hook";
+import moment from "moment";
 
 function Register() {
   const navigate = useNavigate();
@@ -56,19 +59,33 @@ function Register() {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [username, setUsername] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isUser, setIsUser] = React.useState(0);
+  const [code, setCode] = React.useState("");
 
   const [focusedName, setfocusedName] = React.useState(false);
   const [focusedEmail, setfocusedEmail] = React.useState(false);
   const [focusedPassword, setfocusedPassword] = React.useState(false);
-
+  const [telegram, setTelegram] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [sendAgain, setSendAgain] = useState(1); // 0: pending,  1: ban đâu, 2: again
+  const [timer, setTimer] = useState("")
   //logic signup with account
   const handleSignup = async () => {
+    if(loading) return;
+    if(!firstName || !lastName || !username || !email || !password  || !code){
+      toast.warning("Vui lòng điền đầy đủ thông tin")
+      return;
+    }
+    setLoading(true)
     const data = {
       firstName,
       lastName,
       username,
+      email,
+      code,
+      telegram,
       password,
       isUser,
     };
@@ -76,11 +93,28 @@ function Register() {
     if (res?.success) {
       toast.success("tạo tài khoản thành công vui lòng đăng nhập")
       navigate("/auth/login");
+      setSendAgain(true);
     } else {
       toast.error(res?.message || "tạo tài khoản không hành công")
     }
+    setLoading(false)
   };
+  const sendCode = async () => {
+    if(!email || sendAgain == 0) return;
+    setSendAgain(0)
+    setTimer(moment().add(1, "minutes"))
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (regex.test(email)) {
+      const res = await sendCodeEmail(email);
+      if(res.success){
+        toast.warning("Send Email successfully");
+      }
+    } else {
+      toast.warning("Email không hợp lệ")
+    }
+  
 
+  }
   // logic login with google
   const loginGoogle = useGoogleLogin({
     scope:
@@ -94,6 +128,22 @@ function Register() {
     { id: "1", text: "CTV entity" },
   ]
 
+  const handleSkip = () => {
+      setSendAgain(2);
+  }
+  
+  function CodeTimer({ expiryTimestamp }) {
+    const { seconds, minutes } = useTimer({
+      expiryTimestamp,
+      onExpire: handleSkip,
+    });
+  
+    return (
+      <span>
+          <span>{minutes}</span>:<span>{seconds}</span>
+      </span>
+    );
+  }
   return (
     <>
       <AuthHeader
@@ -188,6 +238,58 @@ function Register() {
                         onFocus={() => setfocusedName(true)}
                         onBlur={() => setfocusedName(false)}
                         onChange={(e) => setLastName(e.target.value)}
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                  <FormGroup
+                    className={classnames({
+                      focused: focusedEmail,
+                    })}
+                  >
+                    <InputGroup className="input-group-merge input-group-alternative mb-3">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="ni ni-box-2" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder="Email"
+                        type="email"
+                        onFocus={() => setfocusedEmail(true)}
+                        onBlur={() => setfocusedEmail(false)}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <Button onClick={sendCode}>{sendAgain == 0?
+                      <CodeTimer expiryTimestamp={timer} />: sendAgain == 1 ?"Gửi code":"Gửi lại"}</Button>
+                    </InputGroup>
+                  </FormGroup>
+                  <FormGroup
+                  >
+                    <InputGroup className="input-group-merge input-group-alternative mb-3">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="ni ni-key-25" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder="Code xác nhận gmail"
+                        type="text"
+                        onChange={(e) => setCode(e.target.value)}
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                  <FormGroup
+                  >
+                    <InputGroup className="input-group-merge input-group-alternative mb-3">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="ni ni-send" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder="Telegram"
+                        type="text"
+                        onChange={(e) => setTelegram(e.target.value)}
                       />
                     </InputGroup>
                   </FormGroup>

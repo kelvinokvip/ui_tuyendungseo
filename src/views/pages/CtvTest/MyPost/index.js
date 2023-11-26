@@ -46,7 +46,7 @@ const Filter = ({ keyword, setKeyword, options, setStatus, status, isOrder, setI
             }}
             data={options}
             onChange={(e) =>
-              setIsOrder(e.target.value === "all" ? "" : e.target.value)
+              setStatus(e.target.value === "all" ? "" : e.target.value)
             }
           />
         </Col>
@@ -103,7 +103,7 @@ const MyPost = () => {
     { id: "all", text: "Tất cả" },
     { id: "-1", text: "Hết hạn" },
     { id: "0", text: "Đang viết" },
-    { id: "1", text: "Hoàn thành" },
+    { id: "1", text: "Chờ duyệt" },
     { id: "2", text: "Đạt" },
     { id: "-2", text: "Không đạt" },
   ];
@@ -111,7 +111,7 @@ const MyPost = () => {
     "-1": "Hết hạn",
     "-2": "Không đạt",
     0: "Đang viết",
-    1: "Hoàn thành",
+    1: "Chờ duyệt",
     2: "Đạt",
   };
 
