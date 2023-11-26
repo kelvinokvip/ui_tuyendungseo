@@ -43,6 +43,7 @@ const DetailPost = ({ id, refresh }) => {
         toggle={() => handleCloseModal()}
         modalTransition={{ timeout: 100 }}
         backdropTransition={{ timeout: 100 }}
+        style={{maxWidth: "80%"}}
       >
         <div className="modal-header">
           <h5 className="modal-title" id="exampleModalLabel">
@@ -68,6 +69,14 @@ const DetailPost = ({ id, refresh }) => {
             <Col xs="12">
               <p style={{ overflow: "auto" }}>
                 Mô tả: <strong className="h4">{data?.description}</strong>
+              </p>
+            </Col>
+            <Col xs="12">
+              <p style={{ overflow: "auto"}}>
+                Nội dung: 
+                <div style={{border: "1px solid #000000", padding: 10}}>
+                <strong className="h4"  dangerouslySetInnerHTML={{__html: data?.receive?.content }}></strong>
+                </div>
               </p>
             </Col>
             <Col xs="12">
