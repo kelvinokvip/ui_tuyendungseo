@@ -50,44 +50,71 @@ import {
   Dropdown,
 } from "reactstrap";
 import NotificationUI from "components/Notification";
+import { getSendNotificationByUserId } from "api/notification";
+import { Badge } from "antd";
+import { useMemo } from "react";
 
 function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
   const navigate = useNavigate;
   const { user } = useAuthContext();
   const { logout } = useContext(AuthContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const [dataNotification, setDataNotication] = useState([]);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
   // function that on mobile devices makes the search open
-  const openSearch = () => {
-    document.body.classList.add("g-navbar-search-showing");
-    setTimeout(function () {
-      document.body.classList.remove("g-navbar-search-showing");
-      document.body.classList.add("g-navbar-search-show");
-    }, 150);
-    setTimeout(function () {
-      document.body.classList.add("g-navbar-search-shown");
-    }, 300);
-  };
-  // function that on mobile devices makes the search close
-  const closeSearch = () => {
-    document.body.classList.remove("g-navbar-search-shown");
-    setTimeout(function () {
-      document.body.classList.remove("g-navbar-search-show");
-      document.body.classList.add("g-navbar-search-hiding");
-    }, 150);
-    setTimeout(function () {
-      document.body.classList.remove("g-navbar-search-hiding");
-      document.body.classList.add("g-navbar-search-hidden");
-    }, 300);
-    setTimeout(function () {
-      document.body.classList.remove("g-navbar-search-hidden");
-    }, 500);
-  };
+  // const openSearch = () => {
+  //   document.body.classList.add("g-navbar-search-showing");
+  //   setTimeout(function () {
+  //     document.body.classList.remove("g-navbar-search-showing");
+  //     document.body.classList.add("g-navbar-search-show");
+  //   }, 150);
+  //   setTimeout(function () {
+  //     document.body.classList.add("g-navbar-search-shown");
+  //   }, 300);
+  // };
+  // // function that on mobile devices makes the search close
+  // const closeSearch = () => {
+  //   document.body.classList.remove("g-navbar-search-shown");
+  //   setTimeout(function () {
+  //     document.body.classList.remove("g-navbar-search-show");
+  //     document.body.classList.add("g-navbar-search-hiding");
+  //   }, 150);
+  //   setTimeout(function () {
+  //     document.body.classList.remove("g-navbar-search-hiding");
+  //     document.body.classList.add("g-navbar-search-hidden");
+  //   }, 300);
+  //   setTimeout(function () {
+  //     document.body.classList.remove("g-navbar-search-hidden");
+  //   }, 500);
+  // };
+  const countReaded = useMemo(() => {
+    const c = dataNotification.filter(item => item.users.find(i => i.id == user.id && i.readed == false)).length;
+    return c || 0;
+  },[dataNotification, user.id])
   const handleLogout = async () => {
     await logout();
     window.location.href = process.env.REACT_APP_DASHBOARD;
   };
+
+
+  useEffect(() => {
+    if(user?.id){
+      fetchApiGetNotificationByUserId();
+    }
+  }, [user?.id]);
+
+  
+  const fetchApiGetNotificationByUserId = async () => {
+    try { 
+      const res = await getSendNotificationByUserId(user.id);
+      setDataNotication(res);
+    } catch (error) {
+      console.log("error:", error);
+    } finally {
+     
+    }
+  };
+
   return (
     <>
       <Navbar
@@ -120,14 +147,17 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
             <Nav className="align-items-center ml-auto ml-md-0" navbar>
               <Dropdown isOpen={dropdownOpen} toggle={toggle}>
                 <DropdownToggle className="nav-link pr-0" color="" tag="a">
+                <Badge size="small" count={countReaded}>
                   <Media
                     className="align-items-center"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", fontSize: 20 }}
                   >
                     <span className="ni ni-bell-55 text-white"></span>
                   </Media>
+                </Badge>
+                
                 </DropdownToggle>
-                <NotificationUI />
+                <NotificationUI data={dataNotification} fetchApiGetNotificationByUserId={fetchApiGetNotificationByUserId} />
               </Dropdown>
               <UncontrolledDropdown nav>
                 <DropdownToggle className="nav-link pr-0" color="" tag="a">

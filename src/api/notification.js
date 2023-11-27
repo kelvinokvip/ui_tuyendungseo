@@ -31,3 +31,8 @@ export async function getNotificationById(id) {
   const res = await getInstance().get(`/notificationById/${id}`);
   return res?.data;
 }
+
+export async function updateNotificationReaded(id) {
+  const res = await getInstance().put(`/notificationReaded/${id}`);
+  return res?.data;
+}

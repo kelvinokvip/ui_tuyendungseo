@@ -27,6 +27,10 @@ import moment from "moment";
 import DetailPost from "./Details";
 import { CalculateTime } from "function/calculateTime";
 import DetailEntity from "./DetailEntity";
+
+import 'moment/locale/vi'
+moment.locale('vi')
+
 //api
 const Filter = ({ keyword, setKeyword, options, setStatus, status, isOrder, setIsOrder, optionsOrders }) => {
   return (
@@ -98,7 +102,7 @@ const MyPost = () => {
   useEffect(() => {
     handleGetMyPostList();
   }, [pageIndex, pageSize, keywordDebouce, status, isOrder]);
-
+  
   const options = [
     { id: "all", text: "Tất cả" },
     { id: "-1", text: "Hết hạn" },
@@ -215,6 +219,9 @@ const MyPost = () => {
                             Từ khóa
                           </th>
                           <th className="sort" scope="col">
+                            Thời gian nộp bài
+                          </th>
+                          <th className="sort" scope="col">
                             Trạng thái
                           </th>
                           <th scope="col">Hành động</th>
@@ -233,6 +240,7 @@ const MyPost = () => {
                               </td>
                               <td align="center">{CalculateTime(item.receive?.receiveTime, item.receive?.finishTime)}</td>
                               <td>{item?.keywords?.map((item1) => item1)}</td>
+                              <td>{moment(item.receive?.finishTime).format('HH:mm:ss, DD-MM-YYYY')}</td>
                               <td>
                                 {item.status !== 0 ? (
                                   optionsForStatus[item?.status]
