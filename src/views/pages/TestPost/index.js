@@ -23,6 +23,7 @@ import Select2 from "react-select2-wrapper";
 import DetailPost from "./DetailPost";
 import { EnterHelper } from "utils/EnterHelper";
 import { CalculateTime } from "function/calculateTime";
+import moment from "moment";
 
 const Filter = ({ options, setStatus, status, isOrder, setIsOrder, optionsOrders }) => {
   return (
@@ -230,6 +231,9 @@ const TestPost = () => {
                             Tổng thời gian làm bài
                           </th>
                           <th className="sort" scope="col">
+                            Thời gian nộp bài
+                          </th>
+                          <th className="sort" scope="col">
                             Trạng thái
                           </th>
                           <th className="sort" scope="col">
@@ -251,6 +255,7 @@ const TestPost = () => {
                             <td>{item?.keywords?.map((item1) => item1)}</td>
                             <td>{item.receive?.user?.username}</td>
                             <td align="center">{CalculateTime(item.receive?.receiveTime, item.receive?.finishTime)}</td>
+                            <td>{moment(item.receive?.finishTime).format('HH:mm:ss, DD-MM-YYYY')}</td>
                             <th>
                               <div
                                 style={{

@@ -100,7 +100,7 @@ export default function Notification() {
   const renderUsers = (users) => {
     const names = []
     users.forEach(user => {
-      const item = dataCTV.find(i => i.id == user);
+      const item = dataCTV.find(i => i.id == user.id);
       if(item) names.push(item.username);
     })
     return names.join(', ');
@@ -155,7 +155,7 @@ export default function Notification() {
                               <td style={{whiteSpace: "wrap"}}>{item.title}</td>
                               <td style={{whiteSpace: "wrap"}} dangerouslySetInnerHTML={{__html: item.message}}></td>
                               <td>
-                                {item.type == 1 ? "all user" : item.type == 2?renderUsers(item.userIds): `Chuyên mục ${item.category}`}
+                                {item.type == 1 ? "all user" : item.type == 2?renderUsers(item.users): `Chuyên mục ${item.category}`}
                               </td>
                               <td className="table-actions">
                                 <Button onClick={() => setIsOpen(item._id)}>
