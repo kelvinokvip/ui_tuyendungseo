@@ -8,9 +8,6 @@ import {
   Container,
   Input,
   Label,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Row,
   Table,
   UncontrolledTooltip,
@@ -21,6 +18,7 @@ import { getPagingCtv } from "api/user";
 import { BsPencil } from "react-icons/bs";
 import UpdateCTV from "./Update";
 import Select2 from "react-select2-wrapper";
+import { Pagination } from "antd";
 
 const Filter = ({ keyword, setKeyword, isUser, setIsUser, optionUsers }) => {
   return (
@@ -55,25 +53,6 @@ const Filter = ({ keyword, setKeyword, isUser, setIsUser, optionUsers }) => {
   );
 };
 //
-const renderPaginationItemDivs = (totalPages, pageIndex, setPageIndex) => {
-  const divs = [];
-  for (let i = 1; i <= totalPages; i++) {
-    divs.push(
-      <PaginationItem className={pageIndex === i && "active"}>
-        <PaginationLink
-          href="#pablo"
-          onClick={(e) => {
-            e.preventDefault();
-            setPageIndex(i);
-          }}
-        >
-          {i} <span className="sr-only">(current)</span>
-        </PaginationLink>
-      </PaginationItem>
-    );
-  }
-  return divs;
-};
 const options = {
   0: "Chưa duyệt",
   1: "Đã duyệt",
@@ -89,6 +68,7 @@ const Ctv = () => {
   const [loading, setLoading] = useState(false);
   const [dataCtvList, setDataCtvList] = useState([]);
   const [totalPages, setTotalPages] = useState(5);
+  const [totalItem, setTotalItem] = useState(0);
   const [isFilter, setIsFilter] = useState(true);
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(1);
@@ -112,11 +92,18 @@ const Ctv = () => {
       const res = await getPagingCtv(pageSize, pageIndex, keywordDebouce, isUser);
       setDataCtvList(res?.data);
       setTotalPages(res?.totalPages);
+      setTotalItem(res?.totalItem)
     } catch (error) {
       console.log("error:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const onShowSizeChange = (current, pageSize) => {
+    setPageIndex(current);
+    setPageSize(pageSize);
+    console.log(current, pageSize);
   };
 
   useEffect(() => {
@@ -241,46 +228,11 @@ const Ctv = () => {
                     <CardFooter className="py-4">
                       <nav aria-label="...">
                         <Pagination
-                          className="pagination justify-content-end mb-0"
-                          listClassName="justify-content-end mb-0"
-                        >
-                          <PaginationItem
-                            className={pageIndex == "1" && "disabled"}
-                          >
-                            <PaginationLink
-                              href="#pablo"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setPageIndex(pageIndex - 1);
-                              }}
-                              tabIndex="-1"
-                            >
-                              <i className="fas fa-angle-left" />
-                              <span className="sr-only">Previous</span>
-                            </PaginationLink>
-                          </PaginationItem>
-                          {renderPaginationItemDivs(
-                            totalPages,
-                            pageIndex,
-                            setPageIndex
-                          )}
-
-                          <PaginationItem
-                            className={pageIndex == totalPages && "disabled"}
-                          >
-                            <PaginationLink
-                              href="#pablo"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setPageIndex(pageIndex + 1);
-                              }}
-                              tabIndex="1"
-                            >
-                              <i className="fas fa-angle-right" />
-                              <span className="sr-only">Next</span>
-                            </PaginationLink>
-                          </PaginationItem>
-                        </Pagination>
+                          style={{ textAlign: "right" }}
+                          defaultCurrent={pageIndex}
+                          onChange={onShowSizeChange}
+                          total={totalItem}
+                        />
                       </nav>
                     </CardFooter>
                   </>
