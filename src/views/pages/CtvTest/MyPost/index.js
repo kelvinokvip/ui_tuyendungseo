@@ -213,6 +213,9 @@ const MyPost = () => {
                             Mô tả
                           </th>
                           <th className="sort" scope="col">
+                            Chuyên mục
+                          </th>
+                          <th className="sort" scope="col">
                             Tổng thời gian làm bài
                           </th>
                           <th className="sort" scope="col">
@@ -238,6 +241,7 @@ const MyPost = () => {
                                   ? `${item?.description.slice(0, 50)}...`
                                   : item?.description}
                               </td>
+                              <td>{item.category}</td>
                               <td align="center">{CalculateTime(item.receive?.receiveTime, item.receive?.finishTime)}</td>
                               <td>{item?.keywords?.map((item1) => item1)}</td>
                               <td>{moment(item.receive?.finishTime).format('HH:mm:ss, DD-MM-YYYY')}</td>

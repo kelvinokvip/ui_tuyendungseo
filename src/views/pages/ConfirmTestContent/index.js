@@ -58,7 +58,7 @@ function ConfirmTestContent() {
                     1. User nhận và viết bài trên website của chúng tôi <br/>
                     2. User có 5 phút chuẩn bị và 120 phút để hoàn thành bài viết 1000 chữ <br/>
                     3. Kết quả bài test được trả sau 3 - 5 ngày qua phần thông báo <br/>
-                    4. Mỗi tài khoản chỉ được làm bài test một lần <br/>
+                    4. Mỗi chuyên mục bạn chỉ được làm bài test 1 lần <br/>
                     5. Chúc các bạn thành công! <br/>
                   </div>
                 </div>}

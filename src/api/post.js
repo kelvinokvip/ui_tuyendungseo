@@ -25,10 +25,12 @@ export async function getPagingPost(
   pageIndex = 1,
   keyword = "",
   status = "",
-  isOrder = ""
+  isOrder = "",
+  startDate,
+  endDate
 ) {
   const res = await getInstance().get(
-    `/post?pageSize=${pageSize}&pageIndex=${pageIndex}&search=${keyword}&status=${status}&isOrder=${isOrder}`
+    `/post?pageSize=${pageSize}&pageIndex=${pageIndex}&search=${keyword}&status=${status}&isOrder=${isOrder}&startDate=${startDate}&endDate=${endDate}`
   );
   return res?.data;
 }
