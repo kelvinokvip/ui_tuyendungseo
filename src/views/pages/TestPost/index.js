@@ -1,14 +1,17 @@
 import { useDebounce } from "hooks/useDebounce";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 import "./styles.scss";
 import {
+  Button,
   Card,
   CardFooter,
   CardHeader,
   Col,
   Container,
+  Form,
+  Input,
   Label,
   Pagination,
   PaginationItem,
@@ -25,7 +28,7 @@ import { EnterHelper } from "utils/EnterHelper";
 import { CalculateTime } from "function/calculateTime";
 import moment from "moment";
 
-const Filter = ({ options, setStatus, status, isOrder, setIsOrder, optionsOrders }) => {
+const Filter = ({ options, setStatus, status, isOrder, setIsOrder, optionsOrders, startDate, endDate, handleGetPagingPost }) => {
   return (
     <>
       <Row>
@@ -61,6 +64,15 @@ const Filter = ({ options, setStatus, status, isOrder, setIsOrder, optionsOrders
               setIsOrder(e.target.value === "all" ? "" : e.target.value)
             }
           />
+        </Col>
+        <Col>
+          <Label>Lọc theo thời gian nộp bài</Label>
+          <Form className="custom" style={{display: 'flex', gap: 5}}>
+            {console.log(startDate.current)}
+           <Input type="date" style={{width: 300}} defaultValue={startDate.current} onChange={(e) => startDate.current = e.target.value}/>
+           <Input type="date" style={{width: 300}} defaultValue={endDate.current} onChange={(e) => endDate.current = e.target.value}/>
+           <Button style={{whiteSpace: 'nowrap'}} onClick={handleGetPagingPost} title="Tìm kiếm">Tìm kiếm</Button>
+          </Form>
         </Col>
       </Row>
     </>
@@ -98,10 +110,12 @@ const TestPost = () => {
   const [status, setStatus] = useState(1);
   const keywordDebouce = useDebounce(keyword, 500);
   const [isOrder, setIsOrder] = useState("");
+  const startDate = useRef(moment().subtract(7, 'days').format("YYYY-MM-DD"));
+  const endDate = useRef(moment().format("YYYY-MM-DD"));
   //
-  //handle about detail post
+  const handleSearchDate = () => {
 
-  //
+  }
   const refresh = () => {
     handleGetPagingPost();
   };
@@ -114,7 +128,9 @@ const TestPost = () => {
         pageIndex,
         keywordDebouce,
         status,
-        isOrder
+        isOrder,
+        startDate.current,
+        endDate.current,
       );
       setDataPostsList(res?.data);
       setTotalPages(res?.totalPages);
@@ -183,6 +199,9 @@ const TestPost = () => {
             isOrder={isOrder}
             setIsOrder={setIsOrder}
             optionsOrders={optionsOrders}
+            startDate={startDate}
+            endDate={endDate}
+            handleGetPagingPost={handleGetPagingPost}
           />
         }
       />
