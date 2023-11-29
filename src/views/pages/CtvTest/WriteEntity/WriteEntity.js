@@ -37,9 +37,9 @@ const WriteEntity = () => {
 
   const handleGetData = async () => {
     const res = await getRandomEntity();
-    if (!res.success && res?.data) {
+    if (!res.success) {
       toast.error(res.message);
-      // navigate("/admin/my-test");
+      return navigate("/admin/list-test-entity");
     }
     setPost(res?.data);
     setPostLink(res?.data.description.split('\n'))
@@ -215,15 +215,20 @@ const WriteEntity = () => {
             </Col>
           </Row>
           <Row className="mt-4">
-            <Col>
-              <Button
-                type="primary"
-                color="primary"
-                onClick={() => handleFinish(false)}
-              >
-                Nộp bài
-              </Button>
-            </Col>
+            {
+              isStart ?
+                <Col>
+                  <Button
+                    type="primary"
+                    color="primary"
+                    onClick={() => handleFinish(false)}
+                  >
+                    Nộp bài
+                  </Button>
+                </Col>
+                :
+                <></>
+            }
           </Row>
         </Container>
       </div>
