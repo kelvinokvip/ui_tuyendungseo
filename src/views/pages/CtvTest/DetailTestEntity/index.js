@@ -40,19 +40,18 @@ const DetailTestEntity = ({
                             <p className="mb-0">1. Yêu cầu toàn bộ link social cần được điền đầy đủ thông tin và stacking cẩn thận.</p>
                             <p className="mb-0">2. Toàn bộ username phải giống hoặc gần giống với domain.</p>
                             <p className="mb-0">3. Mật khẩu bao gồm 12 kí tự, có chữ in hoa, chữ thường, số và thêm kí tự đặc biệt như @). Tuyệt đối không được trùng với username.</p>
-                            <p className="mb-0">4. Độ tuổi: Bắt buộc trên 18 tuổi</p>
+                            <p className="mb-0">4. Độ tuổi: Bắt buộc trên 18 tuổi.</p>
                             <p className="mb-0">5. Avatar: Yêu cầu đúng kích thước vuông 1:1. Trước khi làm tạo ra 3 kích thước từ hình gốc. 80x80; 500x500, 1500x1500.</p>
                             <p className="mb-0">6. Banner: Yêu cầu đúng kích thước 3:1, kích thước tối ưu 1200x400.</p>
                             <p className="mb-0">7. Hashtag: Trung bình khoảng (3 =&gt; 5 hastag, ko có hastag tiếng việt)</p>
-                            <p className="mb-0">8. Gắn hyperlink website, từ khóa chính, social</p>
-                            <p className="mb-0">9. Phải tạo đủ các link social để gắn bio trong ngày, sau đó mới tiến hành gắn link</p>
-                        </Col>
-                        {/* <Col xs="12">
-                            <p style={{ overflow: "auto" }}>
-                                <span>Link entity: </span>
-                                <span className="font-weight-bold">slides.com, speakerdeck.com, audiomack.com</span>
+                            <p className="mb-0">8. Gắn hyperlink website, từ khóa chính, social.</p>
+                            <p className="mb-0">9. Phải tạo đủ các link social để gắn bio trong ngày, sau đó mới tiến hành gắn link.</p>
+                            <p className="mb-0" >File mẫu:
+                                <a style={{ cursor: 'pointer' }} href="https://docs.google.com/spreadsheets/d/1YCyItUiNeh0YK1aHmxHBRIz0-fg0Pz_9jQX9tkz47Yk/edit?usp=sharing">
+                                    <span style={{ color: '#525f7f' }}> https://docs.google.com/spreadsheets/d/1YCyItUiNeh0YK1aHmxHBRIz0-fg0Pz_9jQX9tkz47Yk/edit?usp=sharing</span>
+                                </a>
                             </p>
-                        </Col> */}
+                        </Col>
                     </Row>
                 </div>
                 <div className="modal-footer">
@@ -62,7 +61,7 @@ const DetailTestEntity = ({
                         type="button"
                         onClick={() => handleClickOke()}
                     >
-                        Nhận bài viết
+                        Bắt đầu làm test
                     </Button>
                     <Button
                         color="secondary"

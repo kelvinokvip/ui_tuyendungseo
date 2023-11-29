@@ -67,11 +67,11 @@ const Filter = ({ options, setStatus, status, isOrder, setIsOrder, optionsOrders
         </Col>
         <Col>
           <Label>Lọc theo thời gian nộp bài</Label>
-          <Form className="custom" style={{display: 'flex', gap: 5}}>
+          <Form className="custom" style={{ display: 'flex', gap: 5 }}>
             {console.log(startDate.current)}
-           <Input type="date" style={{width: 300}} defaultValue={startDate.current} onChange={(e) => startDate.current = e.target.value}/>
-           <Input type="date" style={{width: 300}} defaultValue={endDate.current} onChange={(e) => endDate.current = e.target.value}/>
-           <Button style={{whiteSpace: 'nowrap'}} onClick={handleGetPagingPost} title="Tìm kiếm">Tìm kiếm</Button>
+            <Input type="date" style={{ width: 300 }} defaultValue={startDate.current} onChange={(e) => startDate.current = e.target.value} />
+            <Input type="date" style={{ width: 300 }} defaultValue={endDate.current} onChange={(e) => endDate.current = e.target.value} />
+            <Button style={{ whiteSpace: 'nowrap' }} onClick={handleGetPagingPost} title="Tìm kiếm">Tìm kiếm</Button>
           </Form>
         </Col>
       </Row>
@@ -253,6 +253,9 @@ const TestPost = () => {
                             Thời gian nộp bài
                           </th>
                           <th className="sort" scope="col">
+                            Người duyệt
+                          </th>
+                          <th className="sort" scope="col">
                             Trạng thái
                           </th>
                           <th className="sort" scope="col">
@@ -275,6 +278,7 @@ const TestPost = () => {
                             <td>{item.receive?.user?.username}</td>
                             <td align="center">{CalculateTime(item.receive?.receiveTime, item.receive?.finishTime)}</td>
                             <td>{moment(item.receive?.finishTime).format('HH:mm:ss, DD-MM-YYYY')}</td>
+                            <td>{item.censor?.user?.username}</td>
                             <th>
                               <div
                                 style={{

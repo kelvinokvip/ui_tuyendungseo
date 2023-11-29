@@ -230,9 +230,11 @@ const WriteEntity = () => {
       {!isStart && (
         <ReactBSAlert
           warning
-          title="Bấm ok để viết bài, bạn có thời hạn 2 tiếng để hoàn thành bài!"
           onConfirm={handleStartPost}
-        />
+        >
+          <h4 className="title-warning">Bấm OK để bắt đầu, bạn có thời hạn 2 tiếng để hoàn thành!</h4>
+          <h4 className="title-warning">Vui lòng bấm quay màn hình trong quá trình thực hiện.!</h4>
+        </ReactBSAlert>
       )}
     </>
   );

@@ -11,12 +11,16 @@ function CtvTestEntity() {
     <>
       <div className="test-entity">
         <div className="container-test-entity">
-          <p>1. User vui lòng đọc kỹ hướng dẫn và yêu cầu bài test, sau khi sẵn sàng hãy bấm đăng ký làm test entity.</p>
-          <p>2. User có 5 phút chuẩn bị, đọc yêu cầu và bắt đầu tiến hành tạo 10 link social (random link từ 4 nhóm)</p>
-          <p>3. User phải bấm quay màn hình trong toàn bộ quá trình làm test. Sau khi hoàn thành, user cần gửi lại: Link file thành phẩm (mở quyền xem) + link drive có clip quay màn hình</p>
-          <p>4. Kết quả bài test được trả sau 2 ngày qua phần thông báo</p>
-          <p>5. Mỗi tài khoản chỉ được làm bài test một lần</p>
-          <p>Chúc các bạn thành công!</p>
+          <div className="container-test-entity-title">
+            <strong>User vui lòng đọc kỹ hướng dẫn và yêu cầu bài test trước khi nhấn nút "Bắt đầu làm test". Lưu ý: Mỗi tài khoản CTV chỉ được làm test một lần, nếu chưa sẵn sàng vui lòng trở về trang chủ.</strong>
+          </div>
+          <div>
+            <p>Thông tin cần nắm rõ trước khi làm test: </p>
+            <p>1. Bài test yêu cầu user tạo 10 link social (gồm có 4 loại chính: Chèn link cụ thể, chèn link trên bio, dùng thẻ {`<a href="link web">anchor text</a>`}, link rút gọn).</p>
+            <p>2. User phải bấm quay màn hình trong toàn bộ quá trình làm test. Sau khi hoàn thành, user cần gửi lại: Link file thành phẩm (mở quyền xem) + link drive có clip quay màn hình.</p>
+            <p>3. Kết quả bài test được trả sau 2 ngày qua phần thông báo.</p>
+            <p>Chúc các bạn thành công!</p>
+          </div>
         </div>
         <div className="sub-test">
           <Button
@@ -27,7 +31,7 @@ function CtvTestEntity() {
               setIsOpenDetailPost(true);
             }}
           >
-            Làm bài test
+            Yêu cầu bài test
           </Button>
         </div>
       </div>

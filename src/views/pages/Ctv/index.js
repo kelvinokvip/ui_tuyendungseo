@@ -167,6 +167,9 @@ const Ctv = () => {
                             Email
                           </th>
                           <th className="sort" scope="col">
+                            Telegram
+                          </th>
+                          <th className="sort" scope="col">
                             Số bài duyệt
                           </th>
                           <th className="sort" scope="col">
@@ -189,6 +192,7 @@ const Ctv = () => {
                               {item?.firstName} {item?.lastName}
                             </td>
                             <td>{item?.email} </td>
+                            <td>{item?.telegram} </td>
                             <td>{item?.acceptPost}</td>
                             <td>
                               <ul>
