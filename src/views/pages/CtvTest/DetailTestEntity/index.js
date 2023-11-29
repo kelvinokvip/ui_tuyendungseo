@@ -47,12 +47,12 @@ const DetailTestEntity = ({
                             <p className="mb-0">8. Gắn hyperlink website, từ khóa chính, social</p>
                             <p className="mb-0">9. Phải tạo đủ các link social để gắn bio trong ngày, sau đó mới tiến hành gắn link</p>
                         </Col>
-                        <Col xs="12">
+                        {/* <Col xs="12">
                             <p style={{ overflow: "auto" }}>
                                 <span>Link entity: </span>
                                 <span className="font-weight-bold">slides.com, speakerdeck.com, audiomack.com</span>
                             </p>
-                        </Col>
+                        </Col> */}
                     </Row>
                 </div>
                 <div className="modal-footer">

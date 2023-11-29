@@ -26,6 +26,7 @@ import { startPostEntity } from "api/post";
 const WriteEntity = () => {
   const navigate = useNavigate();
   const [post, setPost] = useState();
+  const [postLink, setPostLink] = useState();
   const [isStart, setIsStart] = useState(true);
   const [timer, setTimer] = useState();
   const [editorContent, setEditorContent] = useState(
@@ -36,12 +37,12 @@ const WriteEntity = () => {
 
   const handleGetData = async () => {
     const res = await getRandomEntity();
-    console.log("res?.data", res?.data);
     if (!res.success && res?.data) {
       toast.error(res.message);
       // navigate("/admin/my-test");
     }
     setPost(res?.data);
+    setPostLink(res?.data.description.split('\n'))
     //check expires
     if (res?.data?.receive?.deadline) {
       if (moment().isAfter(moment(res?.data?.receive?.deadline))) {
@@ -117,7 +118,19 @@ const WriteEntity = () => {
                 </div>
                 <div>
                   <Label>Link entity:</Label>
-                  {isStart ? <strong className="ml-4">{post?.description}</strong> : <></>}
+                  {isStart ?
+                    <>
+                      {
+                        postLink?.map((item, index) => {
+                          return (
+                            <p className="margin-p" key={index}>
+                              <strong className="ml-4">{item}</strong>
+                            </p>
+                          )
+                        })
+                      }
+                    </>
+                    : <></>}
                 </div>
               </CardBody>
             </Card>
