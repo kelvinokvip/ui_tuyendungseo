@@ -95,8 +95,8 @@ const DetailPost = ({ id, refresh }) => {
               </p>
             </Col>
             <Col xs="12">
-              <p style={{ overflow: "auto" }}>
-                Mô tả: <strong className="h4">{data?.description}</strong>
+              <p style={{ overflow: "auto" }} className="test-des">
+                Mô tả: <strong className="h4" dangerouslySetInnerHTML={{__html: data?.description}}></strong>
               </p>
             </Col>
             {!data?.isOrder ?

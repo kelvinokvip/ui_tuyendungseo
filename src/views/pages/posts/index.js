@@ -35,6 +35,7 @@ import { BiSolidEdit } from "react-icons/bi";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
 import { updateOrderPost } from "api/orderPost";
 import { sortOrderPost } from "api/orderPost";
+import { removeTagHtml } from "function/removeTagHtml";
 
 
 function getData (arr, totalPage, pageIndex, pageSize = 10) {
@@ -324,11 +325,11 @@ export default function Posts() {
                               <th scope="row">{item?.require?.title}</th>
                               <td className="budget">
                                 {item?.require?.description?.length > 50
-                                  ? `${item?.require?.description.slice(
+                                  ? `${removeTagHtml(item?.require?.description).slice(
                                       0,
                                       50
                                     )}...`
-                                  : item?.require?.description}
+                                  : removeTagHtml(item?.require?.description)}
                               </td>
                               <td>
                                 {item.require.category}

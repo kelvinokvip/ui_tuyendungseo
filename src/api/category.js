@@ -31,3 +31,7 @@ export async function removeCategory(id) {
   const res = await getInstance().delete(`/category/${id}`);
   return res?.data;
 }
+export async function getCateByUser() {
+  const res = await getInstance().get(`/getCateByUser`);
+  return res?.data;
+}

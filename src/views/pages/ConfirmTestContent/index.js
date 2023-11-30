@@ -1,4 +1,4 @@
-import { getAllCategoriesList } from "api/category";
+import { getCateByUser } from "api/category";
 import { receiveRandomPost } from "api/post";
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 import { useEffect, useState } from "react";
@@ -29,7 +29,7 @@ function ConfirmTestContent() {
   }
   useEffect(() => {
      (async () => {
-      const res = await getAllCategoriesList();
+      const res = await getCateByUser();
       setCategory(res.data)
     })()
   },[])
