@@ -26,6 +26,7 @@ import { startPostEntity } from "api/post";
 const WriteEntity = () => {
   const navigate = useNavigate();
   const [post, setPost] = useState();
+  const [postLink, setPostLink] = useState();
   const [isStart, setIsStart] = useState(true);
   const [timer, setTimer] = useState();
   const [editorContent, setEditorContent] = useState(
@@ -36,12 +37,12 @@ const WriteEntity = () => {
 
   const handleGetData = async () => {
     const res = await getRandomEntity();
-    console.log("res?.data", res?.data);
-    if (!res.success && res?.data) {
+    if (!res.success) {
       toast.error(res.message);
-      // navigate("/admin/my-test");
+      return navigate("/admin/list-test-entity");
     }
     setPost(res?.data);
+    setPostLink(res?.data.description.split('\n'))
     //check expires
     if (res?.data?.receive?.deadline) {
       if (moment().isAfter(moment(res?.data?.receive?.deadline))) {
@@ -117,7 +118,19 @@ const WriteEntity = () => {
                 </div>
                 <div>
                   <Label>Link entity:</Label>
-                  {isStart ? <strong className="ml-4">{post?.description}</strong> : <></>}
+                  {isStart ?
+                    <>
+                      {
+                        postLink?.map((item, index) => {
+                          return (
+                            <p className="margin-p" key={index}>
+                              <strong className="ml-4">{item}</strong>
+                            </p>
+                          )
+                        })
+                      }
+                    </>
+                    : <></>}
                 </div>
               </CardBody>
             </Card>
@@ -202,24 +215,31 @@ const WriteEntity = () => {
             </Col>
           </Row>
           <Row className="mt-4">
-            <Col>
-              <Button
-                type="primary"
-                color="primary"
-                onClick={() => handleFinish(false)}
-              >
-                Nộp bài
-              </Button>
-            </Col>
+            {
+              isStart ?
+                <Col>
+                  <Button
+                    type="primary"
+                    color="primary"
+                    onClick={() => handleFinish(false)}
+                  >
+                    Nộp bài
+                  </Button>
+                </Col>
+                :
+                <></>
+            }
           </Row>
         </Container>
       </div>
       {!isStart && (
         <ReactBSAlert
           warning
-          title="Bấm ok để viết bài, bạn có thời hạn 2 tiếng để hoàn thành bài!"
           onConfirm={handleStartPost}
-        />
+        >
+          <h4 className="title-warning">Bấm OK để bắt đầu, bạn có thời hạn 2 tiếng để hoàn thành!</h4>
+          <h4 className="title-warning">Vui lòng bấm quay màn hình trong quá trình thực hiện.!</h4>
+        </ReactBSAlert>
       )}
     </>
   );

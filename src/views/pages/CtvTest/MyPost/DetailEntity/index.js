@@ -6,6 +6,7 @@ import "./styles.scss"
 
 const DetailEntity = ({ id, refresh }) => {
   const [data, setData] = useState();
+  const [dataLink, setDataLink] = useState();
   const [show, setShow] = useState(false);
 
   const handleGetData = async () => {
@@ -13,6 +14,7 @@ const DetailEntity = ({ id, refresh }) => {
       const res = await getPostById(id);
       if (res.success) {
         setData(res.data);
+        setDataLink(res?.data.description.split('\n'))
       }
     }
   };
@@ -67,8 +69,18 @@ const DetailEntity = ({ id, refresh }) => {
             </Col>
             <Col xs="12">
               <p style={{ overflow: "auto" }}>
-                Mô tả: <strong className="h4">{data?.description}</strong>
+                Mô tả:
+                {
+                  dataLink?.map((item, index) => {
+                    return (
+                      <p className="margin-p" key={index}>
+                        <strong className="h4">{item}</strong>
+                      </p>
+                    )
+                  })
+                }
               </p>
+
             </Col>
             <Col xs="12">
               <p style={{ overflow: "auto" }}>
