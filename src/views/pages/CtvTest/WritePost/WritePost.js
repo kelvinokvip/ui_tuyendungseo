@@ -167,10 +167,6 @@ const WritePost = () => {
                   <strong className="ml-4">{post?.title}</strong>
                 </div>
                 <div>
-                  <Label>Mô tả:</Label>
-                  <strong className="ml-4">{post?.description}</strong>
-                </div>
-                <div>
                   <Label>Chuyên mục:</Label>
                   <strong className="ml-4">{post?.category}</strong>
                 </div>
@@ -179,6 +175,10 @@ const WritePost = () => {
                   <strong className="ml-4">
                     {post?.keywords?.map((item) => item).toString()}
                   </strong>
+                </div>
+                <div className="mb-2" >
+                  <span>Mô tả:</span>
+                  <strong className="ml-4 test-des" dangerouslySetInnerHTML={{__html: post?.description }}></strong>
                 </div>
                 <div>
                   <Label>Số từ tối thiểu:</Label>
@@ -292,15 +292,11 @@ const WritePost = () => {
       </div>}
       {showModalTopic && (
         <Modal isOpen={true} toggle={() => {}}>
-        <ModalHeader>Yêu cầu đề bài</ModalHeader>
+        <ModalHeader>Yêu cầu bài viết</ModalHeader>
         <ModalBody>
           <div>
             <Label>Tiêu đề:</Label>
             <strong className="ml-4">{post?.title}</strong>
-          </div>
-          <div>
-            <Label>Mô tả:</Label>
-            <strong className="ml-4">{post?.description}</strong>
           </div>
           <div>
             <Label>Chuyên mục:</Label>
@@ -312,12 +308,14 @@ const WritePost = () => {
               {post?.keywords?.map((item) => item).toString()}
             </strong>
           </div>
+          <div className="mb-2">
+            <span>Mô tả:</span>
+            <strong className="ml-4 test-des" dangerouslySetInnerHTML={{__html: post?.description }}></strong>
+          </div>
           <div>
             <Label>Số từ tối thiểu:</Label>
             <strong className="ml-4">{post?.word}</strong>
           </div>
-         
-        
         </ModalBody>
         <ModalFooter>
           {timer5p && <div style={{ textAlign: "center", color: "red", fontSize: 13, marginRight: 20 }}>

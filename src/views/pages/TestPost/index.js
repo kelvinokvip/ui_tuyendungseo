@@ -13,7 +13,6 @@ import {
   Form,
   Input,
   Label,
-  Pagination,
   PaginationItem,
   PaginationLink,
   Row,
@@ -27,6 +26,8 @@ import DetailPost from "./DetailPost";
 import { EnterHelper } from "utils/EnterHelper";
 import { CalculateTime } from "function/calculateTime";
 import moment from "moment";
+import { Pagination } from "antd";
+import { removeTagHtml } from "function/removeTagHtml";
 
 const Filter = ({ options, setStatus, status, isOrder, setIsOrder, optionsOrders, startDate, endDate, handleGetPagingPost }) => {
   return (
@@ -79,25 +80,6 @@ const Filter = ({ options, setStatus, status, isOrder, setIsOrder, optionsOrders
   );
 };
 //
-const renderPaginationItemDivs = (totalPages, pageIndex, setPageIndex) => {
-  const divs = [];
-  for (let i = 1; i <= totalPages; i++) {
-    divs.push(
-      <PaginationItem className={pageIndex == i && "active"}>
-        <PaginationLink
-          href="#pablo"
-          onClick={(e) => {
-            e.preventDefault();
-            setPageIndex(i);
-          }}
-        >
-          {i} <span className="sr-only">(current)</span>
-        </PaginationLink>
-      </PaginationItem>
-    );
-  }
-  return divs;
-};
 //
 const TestPost = () => {
   const [loading, setLoading] = useState(false);
@@ -112,6 +94,7 @@ const TestPost = () => {
   const [isOrder, setIsOrder] = useState("");
   const startDate = useRef(moment().subtract(7, 'days').format("YYYY-MM-DD"));
   const endDate = useRef(moment().format("YYYY-MM-DD"));
+  const [totalItem, setTotalItem] = useState(0);
   //
   const handleSearchDate = () => {
 
@@ -127,13 +110,14 @@ const TestPost = () => {
         pageSize,
         pageIndex,
         keywordDebouce,
-        status,
+        status === "all"? "": status,
         isOrder,
         startDate.current,
         endDate.current,
       );
       setDataPostsList(res?.data);
       setTotalPages(res?.totalPages);
+      setTotalItem(res?.totalItem)
     } catch (error) {
       console.log("error:", error);
     } finally {
@@ -144,7 +128,17 @@ const TestPost = () => {
     handleGetPagingPost();
   }, [pageSize, pageIndex, status, isOrder]);
 
+  const onShowSizeChange = (current, pageSize) => {
+    setPageIndex(current);
+    setPageSize(pageSize);
+  };
+
   const statusOptions = [
+    {
+      title: "Tất cả",
+      value: "all",
+      color: "red",
+    },
     {
       title: "Đạt",
       value: 2,
@@ -163,11 +157,6 @@ const TestPost = () => {
     {
       title: "Hết hạn",
       value: -1,
-      color: "red",
-    },
-    {
-      title: "Lọc theo thời gian nộp bài",
-      value: 5,
       color: "red",
     },
     {
@@ -269,9 +258,9 @@ const TestPost = () => {
                           <tr key={item._id}>
                             <th scope="row">{item?.title}</th>
                             <td className="budget">
-                              {item?.description?.length > 50
-                                ? `${item?.description.slice(0, 50)}...`
-                                : item?.description}
+                                {item?.description?.length > 50
+                                  ? `${removeTagHtml(item?.description).slice(0, 50)}...`
+                                  : removeTagHtml(item?.description)}
                             </td>
                             <td>{item?.category}</td>
                             <td>{item?.keywords?.map((item1) => item1)}</td>
@@ -305,46 +294,12 @@ const TestPost = () => {
                     <CardFooter className="py-4">
                       <nav aria-label="...">
                         <Pagination
-                          className="pagination justify-content-end mb-0"
-                          listClassName="justify-content-end mb-0"
-                        >
-                          <PaginationItem
-                            className={pageIndex == "1" && "disabled"}
-                          >
-                            <PaginationLink
-                              href="#pablo"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setPageIndex(pageIndex - 1);
-                              }}
-                              tabIndex="-1"
-                            >
-                              <i className="fas fa-angle-left" />
-                              <span className="sr-only">Previous</span>
-                            </PaginationLink>
-                          </PaginationItem>
-                          {renderPaginationItemDivs(
-                            totalPages,
-                            pageIndex,
-                            setPageIndex
-                          )}
-
-                          <PaginationItem
-                            className={pageIndex == totalPages && "disabled"}
-                          >
-                            <PaginationLink
-                              href="#pablo"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setPageIndex(pageIndex + 1);
-                              }}
-                              tabIndex="1"
-                            >
-                              <i className="fas fa-angle-right" />
-                              <span className="sr-only">Next</span>
-                            </PaginationLink>
-                          </PaginationItem>
-                        </Pagination>
+                          showSizeChanger
+                          style={{ textAlign: "right" }}
+                          defaultCurrent={pageIndex}
+                          onChange={onShowSizeChange}
+                          total={totalItem}
+                        />
                       </nav>
                     </CardFooter>
                   </>

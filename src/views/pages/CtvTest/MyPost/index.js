@@ -29,6 +29,7 @@ import { CalculateTime } from "function/calculateTime";
 import DetailEntity from "./DetailEntity";
 
 import 'moment/locale/vi'
+import { removeTagHtml } from "function/removeTagHtml";
 moment.locale('vi')
 
 //api
@@ -238,8 +239,8 @@ const MyPost = () => {
                               <th scope="row">{item?.title}</th>
                               <td className="budget">
                                 {item?.description?.length > 50
-                                  ? `${item?.description.slice(0, 50)}...`
-                                  : item?.description}
+                                  ? `${removeTagHtml(item?.description).slice(0, 50)}...`
+                                  : removeTagHtml(item?.description)}
                               </td>
                               <td>{item.category}</td>
                               <td align="center">{CalculateTime(item.receive?.receiveTime, item.receive?.finishTime)}</td>
