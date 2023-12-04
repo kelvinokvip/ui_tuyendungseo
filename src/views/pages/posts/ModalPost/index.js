@@ -6,7 +6,8 @@ import { updateOrtherPost } from "api/orderPost";
 import { createOrtherPost } from "api/orderPost";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import Editor from "ckeditor5-custom-build/build/ckeditor";
 // reactstrap components
 import { Button, FormGroup, Form, Input, Modal, Spinner } from "reactstrap";
 
@@ -100,7 +101,7 @@ const ModalPost = ({
         className="modal-dialog-centered"
         isOpen={open}
         toggle={() => handleCancelModal(false)}
-        style={{maxWidth: 700}}
+        style={{maxWidth: 800}}
       >
         <div className="modal-header">
           <h5 className="modal-title" id="exampleModalLabel">
@@ -165,14 +166,15 @@ const ModalPost = ({
               >
                 Mô tả
               </label>
-              <Input
-                defaultValue={dataUpdate?.description}
-                id="description"
-                name="description"
-                type="textarea"
-                value={formData.description}
-                style={{height: 100}}
-                onChange={handleChange}
+              <CKEditor
+                    editor={Editor}
+                    plugins={["WordCount"]}
+                    data={dataUpdate?.description? dataUpdate.description: formData.description}
+                    config={{ height: 500 }}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      formData.description = data;
+                    }}
               />
             </FormGroup>
             <FormGroup>

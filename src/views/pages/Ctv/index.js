@@ -193,7 +193,9 @@ const Ctv = () => {
                             </td>
                             <td>{item?.email} </td>
                             <td>{item?.telegram} </td>
-                            <td>{item?.acceptPost}</td>
+                            <td>{item?.acceptPost?.length}
+                              {item?.acceptPost?.[0]?.category  && ' (' + item?.acceptPost.map(i=> i.category).join(', ') + ')'} 
+                            </td>
                             <td>
                               <ul>
                                 {item?.category?.map((item, index) => {
