@@ -90,7 +90,7 @@ const TestPost = () => {
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(1);
   const [keyword, setKeyword] = useState("");
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState("all");
   const keywordDebouce = useDebounce(keyword, 500);
   const [isOrder, setIsOrder] = useState("");
   const startDate = useRef(moment().subtract(7, 'days').format("YYYY-MM-DD"));
@@ -141,7 +141,7 @@ const TestPost = () => {
       color: "red",
     },
     {
-      title: "Đạt",
+      title: "Duyệt",
       value: 2,
       color: "green",
     },
@@ -151,17 +151,17 @@ const TestPost = () => {
       color: "blue",
     },
     {
-      title: "Không đạt",
+      title: "Không duyệt",
       value: -2,
       color: "red",
     },
+    // {
+    //   title: "Hết hạn",
+    //   value: -1,
+    //   color: "red",
+    // },
     {
-      title: "Hết hạn",
-      value: -1,
-      color: "red",
-    },
-    {
-      title: "Đang viết",
+      title: "Đang thực hiện",
       value: 0,
       color: "green",
     },

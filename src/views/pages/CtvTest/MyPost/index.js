@@ -111,16 +111,16 @@ const MyPost = () => {
 
   const options = [
     { id: "all", text: "Tất cả" },
-    { id: "-1", text: "Hết hạn" },
-    { id: "0", text: "Đang viết" },
+    // { id: "-1", text: "Hết hạn" },
+    { id: "2", text: "Duyệt" },
     { id: "1", text: "Chờ duyệt" },
-    { id: "2", text: "Đạt" },
-    { id: "-2", text: "Không đạt" },
+    { id: "-2", text: "Không duyệt" },
+    { id: "0", text: "Đang thực hiện" },
   ];
   const optionsForStatus = {
-    "-1": "Hết hạn",
+    // "-1": "Hết hạn",
     "-2": "Không đạt",
-    0: "Đang viết",
+    0: "Đang thực hiện",
     1: "Chờ duyệt",
     2: "Đạt",
   };
