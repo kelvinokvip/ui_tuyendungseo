@@ -32,7 +32,7 @@ const WriteEntity = () => {
   const [editorContent, setEditorContent] = useState(
     localStorage.getItem("content")
   );
-  const [title, setTitle] = useState(localStorage.getItem("title"));
+  const [title, setTitle] = useState(" ");
   const [expires, setExpires] = useState(false);
 
   const handleGetData = async () => {
@@ -138,7 +138,7 @@ const WriteEntity = () => {
           <Row>
             <Col lg={9}>
               <Row>
-                <Col className="col-12">
+                {/* <Col className="col-12">
                   <Label>Tiêu đề</Label>
                   <br />
                   <Input
@@ -149,7 +149,7 @@ const WriteEntity = () => {
                       setTitle(e.target.value);
                     }}
                   />
-                </Col>
+                </Col> */}
                 <Col className="col-12 mt-4">
                   <Label>Nội dung</Label>
                   <CKEditor

@@ -52,7 +52,7 @@ import { toast } from "react-toastify";
 import { sendCodeEmail } from "api/auth";
 import { useTimer } from "react-timer-hook";
 import moment from "moment";
-
+import Select from 'react-select';
 function Register() {
   const navigate = useNavigate();
   const { signup, loginWithGoogle } = useContext(AuthContext);
@@ -71,10 +71,11 @@ function Register() {
   const [loading, setLoading] = React.useState(false);
   const [sendAgain, setSendAgain] = useState(1); // 0: pending,  1: ban đâu, 2: again
   const [timer, setTimer] = useState("")
+
   //logic signup with account
   const handleSignup = async () => {
-    if(loading) return;
-    if(!firstName || !lastName || !username || !email || !password  || !code){
+    if (loading) return;
+    if (!firstName || !lastName || !username || !email || !password || !code) {
       toast.warning("Vui lòng điền đầy đủ thông tin")
       return;
     }
@@ -100,19 +101,19 @@ function Register() {
     setLoading(false)
   };
   const sendCode = async () => {
-    if(!email || sendAgain == 0) return;
+    if (!email || sendAgain == 0) return;
     setSendAgain(0)
     setTimer(moment().add(1, "minutes"))
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (regex.test(email)) {
       const res = await sendCodeEmail(email);
-      if(res.success){
+      if (res.success) {
         toast.warning("Send Email successfully");
       }
     } else {
       toast.warning("Email không hợp lệ")
     }
-  
+
 
   }
   // logic login with google
@@ -124,23 +125,23 @@ function Register() {
   });
 
   const optionsUser = [
-    { id: "0", text: "CTV content" },
-    { id: "1", text: "CTV entity" },
+    { value: 0, label: "CTV content" },
+    { value: 1, label: "CTV entity" },
   ]
 
   const handleSkip = () => {
-      setSendAgain(2);
+    setSendAgain(2);
   }
-  
+
   function CodeTimer({ expiryTimestamp }) {
     const { seconds, minutes } = useTimer({
       expiryTimestamp,
       onExpire: handleSkip,
     });
-  
+
     return (
       <span>
-          <span>{minutes}</span>:<span>{seconds}</span>
+        <span>{minutes}</span>:<span>{seconds}</span>
       </span>
     );
   }
@@ -259,8 +260,8 @@ function Register() {
                         onBlur={() => setfocusedEmail(false)}
                         onChange={(e) => setEmail(e.target.value)}
                       />
-                      <Button onClick={sendCode}>{sendAgain == 0?
-                      <CodeTimer expiryTimestamp={timer} />: sendAgain == 1 ?"Gửi code":"Gửi lại"}</Button>
+                      <Button onClick={sendCode}>{sendAgain == 0 ?
+                        <CodeTimer expiryTimestamp={timer} /> : sendAgain == 1 ? "Gửi code" : "Gửi lại"}</Button>
                     </InputGroup>
                   </FormGroup>
                   <FormGroup
@@ -339,17 +340,14 @@ function Register() {
                     })}
                   >
                     <InputGroup className="input-group-merge input-group-alternative">
-                      <Select2
-                        className="form-control"
-                        defaultValue={isUser}
-                        data={optionsUser}
-                        options={{
-                          placeholder: isUser === 0 ? "CTV content" : isUser,
-                        }}
+                      <Select
+                        className="form-control ignore-border"
+                        defaultValue={optionsUser[0]}
+                        name="colors"
+                        options={optionsUser}
                         onChange={(e) => {
-                          setIsUser(e.target.value)
-                        }
-                        }
+                          setIsUser(e.value)
+                        }}
                       />
                     </InputGroup>
                   </FormGroup>

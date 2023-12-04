@@ -45,10 +45,11 @@ const DetailTestEntity = ({
                             <p className="mb-0">6. Banner: Yêu cầu đúng kích thước 3:1, kích thước tối ưu 1200x400.</p>
                             <p className="mb-0">7. Hashtag: Trung bình khoảng (3 =&gt; 5 hastag, ko có hastag tiếng việt)</p>
                             <p className="mb-0">8. Gắn hyperlink website, từ khóa chính, social.</p>
-                            <p className="mb-0">9. Phải tạo đủ các link social để gắn bio trong ngày, sau đó mới tiến hành gắn link.</p>
-                            <p className="mb-0" >File mẫu:
+                            {/* <p className="mb-0">9. Phải tạo đủ các link social để gắn bio trong ngày, sau đó mới tiến hành gắn link.</p> */}
+                            <p className="mb-0" style={{ paddingTop: '10px' }}>
+                                <strong>File mẫu:</strong>
                                 <a style={{ cursor: 'pointer' }} href="https://docs.google.com/spreadsheets/d/1YCyItUiNeh0YK1aHmxHBRIz0-fg0Pz_9jQX9tkz47Yk/edit?usp=sharing">
-                                    <span style={{ color: '#525f7f' }}> https://docs.google.com/spreadsheets/d/1YCyItUiNeh0YK1aHmxHBRIz0-fg0Pz_9jQX9tkz47Yk/edit?usp=sharing</span>
+                                    <strong style={{ color: '#525f7f' }}> https://docs.google.com/spreadsheets/d/1YCyItUiNeh0YK1aHmxHBRIz0-fg0Pz_9jQX9tkz47Yk/edit?usp=sharing</strong>
                                 </a>
                             </p>
                         </Col>

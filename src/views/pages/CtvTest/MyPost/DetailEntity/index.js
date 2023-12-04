@@ -3,6 +3,7 @@ import moment from "moment";
 import { useState } from "react";
 import { Button, Col, Modal, Row } from "reactstrap";
 import "./styles.scss"
+import { CalculateTime } from "function/calculateTime";
 
 const DetailEntity = ({ id, refresh }) => {
   const [data, setData] = useState();
@@ -81,6 +82,16 @@ const DetailEntity = ({ id, refresh }) => {
                 }
               </p>
 
+            </Col>
+            <Col xs="12" className="d-flex ">
+              <p>
+                Thời gian làm bài: <strong className="h2">{CalculateTime(data.receive?.receiveTime, data.receive?.finishTime)}</strong>
+              </p>
+            </Col>
+            <Col xs="12" className="d-flex ">
+              <p>
+                Thời gian nộp bài: <strong className="h2">{moment(data.receive?.finishTime).format('HH:mm:ss, DD-MM-YYYY')}</strong>
+              </p>
             </Col>
             <Col xs="12">
               <p style={{ overflow: "auto" }}>

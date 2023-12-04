@@ -1,7 +1,27 @@
 .text-hidden-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical; 
+  -webkit-box-orient: vertical;
   width: 250px;
   overflow: hidden;
+}
+
+.ignore-border {
+  padding: 0px !important;
+  height: 100%;
+}
+
+.ignore-border .css-1dimb5e-singleValue {
+  color: #8898aa !important;
+  padding: 0.625rem 0.75rem;
+}
+
+.ignore-border .css-13cymwt-control {
+  border-style: none !important;
+  background-color: unset !important;
+}
+
+.ignore-border .css-13cymwt-control {
+  border-style: none !important;
+  background-color: unset !important;
 }
