@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button, Col, Modal, Row } from "reactstrap";
 import "./styles.scss"
 import { CalculateTime } from "function/calculateTime";
+import { convertHTMLToText } from "function/convertHTMLToText";
 
 const DetailEntity = ({ id, refresh }) => {
   const [data, setData] = useState();
@@ -71,33 +72,29 @@ const DetailEntity = ({ id, refresh }) => {
             <Col xs="12">
               <p style={{ overflow: "auto" }}>
                 Mô tả:
-                {
-                  dataLink?.map((item, index) => {
-                    return (
-                      <p className="margin-p" key={index}>
-                        <strong className="h4">{item}</strong>
-                      </p>
-                    )
-                  })
-                }
+                <a href={convertHTMLToText(data?.receive?.content)}>
+                  <p className="margin-p">
+                    <strong className="h4">{convertHTMLToText(data?.receive?.content)}</strong>
+                  </p>
+                </a>
               </p>
 
             </Col>
             <Col xs="12" className="d-flex ">
               <p>
-                Thời gian làm bài: <strong className="h2">{CalculateTime(data.receive?.receiveTime, data.receive?.finishTime)}</strong>
+                Thời gian làm bài: <strong className="h2">{CalculateTime(data?.receive?.receiveTime, data?.receive?.finishTime)}</strong>
               </p>
             </Col>
             <Col xs="12" className="d-flex ">
               <p>
-                Thời gian nộp bài: <strong className="h2">{moment(data.receive?.finishTime).format('HH:mm:ss, DD-MM-YYYY')}</strong>
+                Thời gian nộp bài: <strong className="h2">{moment(data?.receive?.finishTime).format('HH:mm:ss, DD-MM-YYYY')}</strong>
               </p>
             </Col>
-            <Col xs="12">
+            {/* <Col xs="12">
               <p style={{ overflow: "auto" }}>
                 Nội dung: <strong className="h4 content-entity" dangerouslySetInnerHTML={{ __html: data?.receive?.content }}></strong>
               </p>
-            </Col>
+            </Col> */}
             <Col xs="12">
               <p>
                 Ngày hết hạn:{" "}

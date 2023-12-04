@@ -30,6 +30,7 @@ import DetailEntity from "./DetailEntity";
 
 import 'moment/locale/vi'
 import { removeTagHtml } from "function/removeTagHtml";
+import { convertHTMLToText } from "function/convertHTMLToText";
 moment.locale('vi')
 
 //api
@@ -86,6 +87,7 @@ const MyPost = () => {
   const [status, setStatus] = useState("");
   const [isOrder, setIsOrder] = useState("");
   const keywordDebouce = useDebounce(keyword, 500);
+  const [isShowCategory, setIsShowCategory] = useState(false);
 
   const handleGetMyPostList = async () => {
     setLoading(true);
@@ -96,6 +98,9 @@ const MyPost = () => {
       status,
       isOrder
     );
+    if (res?.data[0]?.isOrder) {
+      setIsShowCategory(true)
+    }
     setDataPostsList(res?.data);
     setTotalPages(res?.totalPages);
     setLoading(false);
@@ -103,7 +108,7 @@ const MyPost = () => {
   useEffect(() => {
     handleGetMyPostList();
   }, [pageIndex, pageSize, keywordDebouce, status, isOrder]);
-  
+
   const options = [
     { id: "all", text: "Tất cả" },
     { id: "-1", text: "Hết hạn" },
@@ -213,15 +218,25 @@ const MyPost = () => {
                           <th className="sort" scope="col">
                             Mô tả
                           </th>
-                          <th className="sort" scope="col">
-                            Chuyên mục
-                          </th>
+                          {
+                            isShowCategory ?
+                              <></>
+                              :
+                              <th className="sort" scope="col">
+                                Chuyên mục
+                              </th>
+                          }
                           <th className="sort" scope="col">
                             Tổng thời gian làm bài
                           </th>
-                          <th className="sort" scope="col">
-                            Từ khóa
-                          </th>
+                          {
+                            isShowCategory ?
+                              <></>
+                              :
+                              <th className="sort" scope="col">
+                                Từ khóa
+                              </th>
+                          }
                           <th className="sort" scope="col">
                             Thời gian nộp bài
                           </th>
@@ -238,13 +253,27 @@ const MyPost = () => {
                             <tr>
                               <th scope="row">{item?.title}</th>
                               <td className="budget">
-                                {item?.description?.length > 50
-                                  ? `${removeTagHtml(item?.description).slice(0, 50)}...`
-                                  : removeTagHtml(item?.description)}
+                                {item?.isOrder ?
+                                  <a style={{ color: '#525f7f' }} href={convertHTMLToText(item?.receive?.content)}>{convertHTMLToText(item?.receive?.content)}</a>
+                                  :
+                                  <>
+                                    {item?.description?.length > 50
+                                      ? `${removeTagHtml(item?.description).slice(0, 50)}...`
+                                      : removeTagHtml(item?.description)}
+                                  </>
+                                }
                               </td>
-                              <td>{item.category}</td>
+                              {item?.isOrder ?
+                                <></>
+                                :
+                                <td>{item.category}</td>
+                              }
                               <td align="center">{CalculateTime(item.receive?.receiveTime, item.receive?.finishTime)}</td>
-                              <td>{item?.keywords?.map((item1) => item1)}</td>
+                              {item?.isOrder ?
+                                <></>
+                                :
+                                <td>{item?.keywords?.map((item1) => item1)}</td>
+                              }
                               <td>{moment(item.receive?.finishTime).format('HH:mm:ss, DD-MM-YYYY')}</td>
                               <td>
                                 {item.status !== 0 ? (
@@ -269,19 +298,28 @@ const MyPost = () => {
                                   item.status === 0 ?
                                     <>
                                       {
-                                        item.isOrder === true ?
-                                          <i
-                                            className="fa-sharp fa-solid fa-arrow-right"
-                                            onClick={navigate(
-                                              `/admin/my-test-entity`
-                                            )}></i>
-                                          :
+                                        item.isOrder === false ?
+                                          // <i
+                                          //   className="fa-sharp fa-solid fa-arrow-right"
+                                          //   onClick={navigate(
+                                          //     `/admin/my-test-entity`
+                                          //   )}></i>
                                           <i
                                             className="fa-sharp fa-solid fa-arrow-right"
                                             onClick={navigate(
                                               `/admin/my-test/${item?._id}`
                                             )}
                                           ></i>
+                                          :
+                                          <>
+                                            {
+                                              item.isOrder === true ?
+                                                <DetailEntity id={item?._id} />
+                                                :
+                                                <DetailPost id={item?._id} />
+                                            }
+                                          </>
+
                                       }
                                     </>
                                     :

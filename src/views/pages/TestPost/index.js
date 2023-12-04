@@ -28,6 +28,7 @@ import { CalculateTime } from "function/calculateTime";
 import moment from "moment";
 import { Pagination } from "antd";
 import { removeTagHtml } from "function/removeTagHtml";
+import { convertHTMLToText } from "function/convertHTMLToText";
 
 const Filter = ({ options, setStatus, status, isOrder, setIsOrder, optionsOrders, startDate, endDate, handleGetPagingPost }) => {
   return (
@@ -110,10 +111,10 @@ const TestPost = () => {
         pageSize,
         pageIndex,
         keywordDebouce,
-        status === "all"? "": status,
+        status === "all" ? "" : status,
         isOrder,
-        startDate.current,
-        endDate.current,
+        status === "0" ? "" : startDate.current,
+        status === "0" ? "" : endDate.current,
       );
       setDataPostsList(res?.data);
       setTotalPages(res?.totalPages);
@@ -258,9 +259,15 @@ const TestPost = () => {
                           <tr key={item._id}>
                             <th scope="row">{item?.title}</th>
                             <td className="budget">
-                                {item?.description?.length > 50
-                                  ? `${removeTagHtml(item?.description).slice(0, 50)}...`
-                                  : removeTagHtml(item?.description)}
+                              {item?.isOrder ?
+                                <a style={{ color: '#525f7f' }} href={convertHTMLToText(item?.receive?.content)}>{convertHTMLToText(item?.receive?.content)}</a>
+                                :
+                                <>
+                                  {item?.description?.length > 50
+                                    ? `${removeTagHtml(item?.description).slice(0, 50)}...`
+                                    : removeTagHtml(item?.description)}
+                                </>
+                              }
                             </td>
                             <td>{item?.category}</td>
                             <td>{item?.keywords?.map((item1) => item1)}</td>

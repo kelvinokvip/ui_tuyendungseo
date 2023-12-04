@@ -28,13 +28,13 @@ function AdminFooter() {
           <Row className="align-items-center justify-content-lg-between">
             <Col lg="6">
               <div className="copyright text-center text-lg-left text-muted">
-                © {new Date().getFullYear()}{" "}
+                Contact:
                 <a
                   className="font-weight-bold ml-1"
-                  href="https://www.creative-tim.com?ref=adpr-admin-footer"
+                  href="mailto: freelancer@okvip.com"
                   target="_blank"
                 >
-                  Creative Tim
+                  freelancer@okvip.com
                 </a>
               </div>
             </Col>

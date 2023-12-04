@@ -34,6 +34,7 @@ const WriteEntity = () => {
   );
   const [title, setTitle] = useState(" ");
   const [expires, setExpires] = useState(false);
+  const [isFinish, setIsFinish] = useState(false);
 
   const handleGetData = async () => {
     const res = await getRandomEntity();
@@ -86,6 +87,7 @@ const WriteEntity = () => {
     };
     const res = await finishPost(post._id, dataReq);
     if (res?.success) {
+      setIsFinish(false);
       toast.success(
         "Nộp bài thành công! Vui lòng chờ quản trị viên duyệt bài!"
       );
@@ -221,7 +223,7 @@ const WriteEntity = () => {
                   <Button
                     type="primary"
                     color="primary"
-                    onClick={() => handleFinish(false)}
+                    onClick={() => setIsFinish(true)}
                   >
                     Nộp bài
                   </Button>
@@ -239,6 +241,16 @@ const WriteEntity = () => {
         >
           <h4 className="title-warning">Bấm OK để bắt đầu, bạn có thời hạn 2 tiếng để hoàn thành!</h4>
           <h4 className="title-warning">Vui lòng bấm quay màn hình trong quá trình thực hiện.!</h4>
+        </ReactBSAlert>
+      )}
+
+      {isFinish && (
+        <ReactBSAlert
+          warning
+          onConfirm={() => handleFinish()}
+        >
+          <h4 className="title-warning">Kết quả sẽ được trả trong vòng 2 ngày kể từ khi CTV nộp bài.</h4>
+          <h4 className="title-warning">Vui lòng kiểm tra phần thông báo để nhận kết quả!</h4>
         </ReactBSAlert>
       )}
     </>
