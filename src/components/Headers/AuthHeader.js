@@ -27,7 +27,7 @@ function AuthHeader({ title, lead }) {
         <Container>
           <div className="header-body text-center mb-7">
             <Row className="justify-content-center">
-              <Col className="px-5" lg="6" md="8" xl="5">
+              <Col className="px-5" lg="8" md="8" xl="8">
                 {title ? <h1 className="text-white">{title}</h1> : null}
                 {lead ? <p className="text-lead text-white">{lead}</p> : null}
               </Col>

@@ -86,7 +86,7 @@ function Login() {
     <>
       <AuthHeader
         title="Welcome!"
-        lead="Use these awesome forms to login or create new account in your project for free."
+        lead="Đăng nhập để tham gia vào cộng đồng freelancer OKVIP."
       />
       <Container
         className="mt--8 pb-5"
