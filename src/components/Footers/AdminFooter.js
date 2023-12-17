@@ -42,34 +42,18 @@ function AdminFooter() {
               <Nav className="nav-footer justify-content-center justify-content-lg-end">
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com?ref=adpr-admin-footer"
+                    href="https://t.me/dizo911"
                     target="_blank"
                   >
-                    Creative Tim
+                    Liên hệ admin
                   </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com/presentation?ref=adpr-admin-footer"
+                    href="https://t.me/congtacviencom"
                     target="_blank"
                   >
-                    About Us
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    href="http://blog.creative-tim.com?ref=adpr-admin-footer"
-                    target="_blank"
-                  >
-                    Blog
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    href="https://www.creative-tim.com/license?ref=adpr-admin-footer"
-                    target="_blank"
-                  >
-                    License
+                    Group cộng tác viên
                   </NavLink>
                 </NavItem>
               </Nav>
