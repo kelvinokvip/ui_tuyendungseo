@@ -53,7 +53,7 @@ function getData (arr, totalPage, pageIndex, pageSize = 10) {
 export default function Posts() {
   const [loading, setLoading] = useState(true);
   const [categorySearch, setCategorySearch] = useState("");
-  const [options, setOptions] = useState([{ id: "all", text: "Tổng hợp" }]);
+  const [options, setOptions] = useState([{ id: "all", text: "Tất cả" }]);
   const [dataPostsList, setDataPostsList] = useState([]);
   const [isFilter, setIsFilter] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -180,7 +180,7 @@ export default function Posts() {
               options={{
                 placeholder:
                   categorySearch === "all" || categorySearch === ""
-                    ? "Tổng hợp"
+                    ? "Tất cả"
                     : categorySearch,
               }}
               data={options}
