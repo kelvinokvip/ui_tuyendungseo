@@ -222,6 +222,9 @@ const TestPost = () => {
                       <thead className="thead-light">
                         <tr>
                           <th className="sort" scope="col">
+                            STT
+                          </th>
+                          <th className="sort" scope="col">
                             Tiêu đề
                           </th>
                           <th className="sort" scope="col">
@@ -255,8 +258,9 @@ const TestPost = () => {
                       </thead>
                       {/* dữ liệu */}
                       <tbody className="list">
-                        {dataPostsList?.map((item) => (
+                        {dataPostsList?.map((item, index) => (
                           <tr key={item._id}>
+                            <th scope="row">{index}</th>
                             <th scope="row">{item?.title}</th>
                             <td className="budget">
                               {item?.isOrder ?
