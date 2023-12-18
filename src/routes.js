@@ -67,7 +67,7 @@ const routes = [
         miniName: "A",
         component: <TestPost />,
         layout: "/admin",
-        permission: "admin-post",
+        permission: "test-manager",
       },
       {
         path: "/ctv",
