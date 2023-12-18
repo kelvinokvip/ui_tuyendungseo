@@ -12,9 +12,6 @@ import {
   Button,
   Col,
   CardFooter,
-  PaginationItem,
-  PaginationLink,
-  Pagination,
   Input,
 } from "reactstrap";
 // react plugin used to create DropdownMenu for selecting items
@@ -29,7 +26,7 @@ import DetailPost from "../CtvTest/DetailPost";
 import { BsTrashFill } from "react-icons/bs";
 import ModalPost from "./ModalPost";
 import { getOrderPost } from "api/orderPost";
-import { Modal } from "antd";
+import { Modal, Pagination } from "antd";
 import { deleteOrderPost } from "api/orderPost";
 import { BiSolidEdit } from "react-icons/bi";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
@@ -53,7 +50,7 @@ function getData (arr, totalPage, pageIndex, pageSize = 10) {
 export default function Posts() {
   const [loading, setLoading] = useState(true);
   const [categorySearch, setCategorySearch] = useState("");
-  const [options, setOptions] = useState([{ id: "all", text: "Tổng hợp" }]);
+  const [options, setOptions] = useState([{ id: "all", text: "Tất cả" }]);
   const [dataPostsList, setDataPostsList] = useState([]);
   const [isFilter, setIsFilter] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -63,6 +60,8 @@ export default function Posts() {
   const [dataSearch, setDataSearch] = useState([]);
   const [totalPage, setTotalPage] = useState([])
   const [pageIndex, setPageIndex] = useState(1);
+  const [totalItem, setTotalItem] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   //handle event open detail post
   const [isOpenDetailPost, setIsOpenDetailPost] = useState(false);
   const [detailPostData, setDetailPostData] = useState({});
@@ -71,12 +70,13 @@ export default function Posts() {
   
 
   useEffect(() => {
-    setTotalPage(Math.ceil(dataPostsList.length / 10))
-  },[dataPostsList])
+    setTotalPage(Math.ceil(dataPostsList.length / pageSize))
+    setTotalItem(dataPostsList.length)
+  },[dataPostsList, pageSize])
 
   useEffect(() => {
     handleSearch()
-  },[dataPostsList, pageIndex, totalPage, categorySearch])
+  },[dataPostsList, pageIndex, totalPage, categorySearch, pageSize])
   
   const handleSearch = () => {
     let data = dataPostsList;
@@ -97,7 +97,8 @@ export default function Posts() {
     if(categorySearch && categorySearch !== "all"){
       data = data.filter(item => item.require.category === categorySearch)
     }
-    setDataSearch(getData(data, totalPage, pageIndex, 10))
+    setTotalItem(data.length)
+    setDataSearch(getData(data, totalPage, pageIndex, pageSize))
   }
 
   const handleDelete = () => {
@@ -180,11 +181,14 @@ export default function Posts() {
               options={{
                 placeholder:
                   categorySearch === "all" || categorySearch === ""
-                    ? "Tổng hợp"
+                    ? "Tất cả"
                     : categorySearch,
               }}
               data={options}
-              onChange={(e) => setCategorySearch(e.target.value)}
+              onChange={(e) => {
+                setCategorySearch(e.target.value);
+                setPageIndex(1)
+              }}
             />
           </Form>
         </div>
@@ -225,25 +229,11 @@ export default function Posts() {
     setDataSearch(tempData);
   };
 
-  const renderPaginationItemDivs = (totalPage, pageIndex, setPageIndex) => {
-    const divs = [];
-    for (let i = 1; i <= totalPage; i++) {
-      divs.push(
-        <PaginationItem className={pageIndex == i && "active"}>
-          <PaginationLink
-            href="#pablo"
-            onClick={(e) => {
-              e.preventDefault();
-              setPageIndex(i);
-            }}
-          >
-            {i} <span className="sr-only">(current)</span>
-          </PaginationLink>
-        </PaginationItem>
-      );
-    }
-    return divs;
+  const onShowSizeChange = (current, pageSize) => {
+    setPageIndex(current);
+    setPageSize(pageSize);
   };
+
   return (
     <>
       <SimpleHeader
@@ -388,50 +378,16 @@ export default function Posts() {
         </Row>
       </Container>
       <CardFooter className="py-4">
-      <nav aria-label="...">
-        <Pagination
-          className="pagination justify-content-end mb-0"
-          listClassName="justify-content-end mb-0"
-        >
-          <PaginationItem
-            className={pageIndex == "1" && "disabled"}
-          >
-            <PaginationLink
-              href="#pablo"
-              onClick={(e) => {
-                e.preventDefault();
-                setPageIndex(pageIndex - 1);
-              }}
-              tabIndex="-1"
-            >
-              <i className="fas fa-angle-left" />
-              <span className="sr-only">Previous</span>
-            </PaginationLink>
-          </PaginationItem>
-          {renderPaginationItemDivs(
-            totalPage,
-            pageIndex,
-            setPageIndex
-          )}
-
-          <PaginationItem
-            className={pageIndex == totalPage && "disabled"}
-          >
-            <PaginationLink
-              href="#pablo"
-              onClick={(e) => {
-                e.preventDefault();
-                setPageIndex(pageIndex + 1);
-              }}
-              tabIndex="1"
-            >
-              <i className="fas fa-angle-right" />
-              <span className="sr-only">Next</span>
-            </PaginationLink>
-          </PaginationItem>
-        </Pagination>
-      </nav>
-    </CardFooter>
+        <nav aria-label="...">
+          <Pagination
+            showSizeChanger
+            style={{ textAlign: "right" }}
+            defaultCurrent={pageIndex}
+            onChange={onShowSizeChange}
+            total={totalItem}
+          />
+        </nav>
+      </CardFooter>      
       <Modal title="Delete" open={isOpen} onOk={handleDelete} onCancel={()=> setIsOpen(false)}>
           <p>Bạn có chắc chắn muốn xóa?</p>
       </Modal>
