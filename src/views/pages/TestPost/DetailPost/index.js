@@ -1,17 +1,26 @@
 import { getPostById } from "api/post";
 import { updatePostStatus } from "api/post";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { Button, Col, Input, Label, Modal, Row } from "reactstrap";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import Editor from "ckeditor5-custom-build/build/ckeditor";
+import { AuthContext } from "context/authContext";
+import { updateSubPostStatus } from "api/post";
+import { CalculateTime } from "function/calculateTime";
 
-const DetailPost = ({ id, refresh }) => {
+const DetailPost = ({ id, item, refresh }) => {
   const [note, setNote] = useState("");
-  const [data, setData] = useState();
+  const [data, setData] = useState(item);
   const [show, setShow] = useState(false);
-
+  const { permission } = useContext(AuthContext);
+  const isNotAdmin = useMemo(() => {
+    return !permission.find((item) => item.name === "admin-post")
+  },[permission])
+  const isContent = useMemo(() => {
+    return data?.isOrder === false
+  },[data])
   //handle update post
   const handleUpdatePostStatus = async (value) => {
     if (!note?.length) {
@@ -23,7 +32,12 @@ const DetailPost = ({ id, refresh }) => {
         status: value,
         note,
       };
-      const res = await updatePostStatus(id, data);
+      let res = null;
+      if(isNotAdmin && isContent){
+          res = await updateSubPostStatus(id, data);
+      }else {
+          res = await updatePostStatus(id, data);
+      }
       if (res?.success) {
         toast.success("Cập nhật bài viết thành công.");
         refresh();
@@ -35,17 +49,17 @@ const DetailPost = ({ id, refresh }) => {
       handleCloseModal();
     }
   };
-  const handleGetData = async () => {
-    if (id) {
-      const res = await getPostById(id);
-      if (res.success) {
-        setData(res.data);
-      }
-    }
-  };
+  // const handleGetData = async () => {
+  //   if (id) {
+  //     // const res = await getPostById(id);
+  //     // if (res.success) {
+  //     //   setData(res.data);
+  //     // }
+  //   }
+  // };
 
   const handleShowModal = () => {
-    handleGetData();
+    // handleGetData();
     setShow(true);
   };
   const handleCloseModal = () => {
@@ -130,6 +144,11 @@ const DetailPost = ({ id, refresh }) => {
                 </strong>
               </p>
             </Col>
+            <Col xs="12" className="d-flex ">
+              <p>
+                Tổng thời gian làm bài : <strong className="h2">{CalculateTime(data.receive?.receiveTime, data.receive?.finishTime)}</strong>
+              </p>
+            </Col>
             <Col xs="12">
               <p>Nội dung</p>
               <CKEditor
@@ -139,21 +158,53 @@ const DetailPost = ({ id, refresh }) => {
                 data={data?.receive?.content}
               />
             </Col>
-            <Col className="col-12">
+              <Col className="col-12">
               <Label>Đánh giá bài viết</Label>
               <Input
-                disabled={data?.status !== 1}
+                disabled={data?.status !== 1 || (isNotAdmin && data?.subCensor?.user?.username)}
                 defaultValue={data?.censor?.note}
                 type="textarea"
                 onChange={(e) => setNote(e.target.value)}
               />
             </Col>
+            {isContent &&
+            <div style={{marginTop: 10}}>
+              {data?.subCensor?.user?.username &&
+                <Col className="col-12">
+                  <Label>Leader duyệt</Label>
+                  <p>
+                    Người duyệt: <strong className="h2">{data?.subCensor?.user.username}</strong>
+                  </p>
+                  <p>
+                    Kết quả: <strong className="h2">{data?.subCensor?.status === 2 ? "Đạt": "Không đạt"}</strong>
+                  </p>
+                  <p>
+                    Nhận xét: <strong className="h2">{data?.subCensor?.note}</strong>
+                  </p>
+                </Col>
+              }
+              {data?.censor?.user?.username &&
+                <Col className="col-12">
+                  <Label>Admin duyệt</Label>
+                  <p>
+                    Người duyệt: <strong className="h2">{data?.censor?.user.username}</strong>
+                  </p>
+                  <p>
+                    Kết quả: <strong className="h2">{data?.status === 2 ? "Đạt": "Không đạt"}</strong>
+                  </p>
+                  <p>
+                    Nhận xét: <strong className="h2">{data?.censor?.note}</strong>
+                  </p>
+                </Col>
+              }
+              </div>
+            }
           </Row>
         </div>
         <div className="modal-footer">
           <Row className="w-100">
             <Col className="col-6 px-0">
-              {data?.status === 1 && (
+              {(data?.status === 1 && !(isNotAdmin && data?.subCensor?.user?.username)) && (
                 <>
                   <Button
                     color="primary"

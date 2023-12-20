@@ -239,9 +239,9 @@ const TestPost = () => {
                           <th className="sort" scope="col">
                             Người viết
                           </th>
-                          <th className="sort" scope="col">
+                          {/* <th className="sort" scope="col">
                             Tổng thời gian làm bài
-                          </th>
+                          </th> */}
                           <th className="sort" scope="col">
                             Thời gian nộp bài
                           </th>
@@ -276,7 +276,7 @@ const TestPost = () => {
                             <td>{item?.category}</td>
                             <td>{item?.keywords?.map((item1) => item1)}</td>
                             <td>{item.receive?.user?.username}</td>
-                            <td align="center">{CalculateTime(item.receive?.receiveTime, item.receive?.finishTime)}</td>
+                            {/* <td align="center">{CalculateTime(item.receive?.receiveTime, item.receive?.finishTime)}</td> */}
                             <td>{moment(item.receive?.finishTime).format('HH:mm:ss, DD-MM-YYYY')}</td>
                             <td>{item.censor?.user?.username}</td>
                             <th>
@@ -288,6 +288,7 @@ const TestPost = () => {
                                 }}
                               >
                                 {
+                                  (item?.status == 1 && item?.subCensor?.user?.username) ? "Đã kiểm":
                                   statusOptions.find(
                                     (itemS) => itemS.value === item?.status
                                   )?.title
@@ -296,7 +297,7 @@ const TestPost = () => {
                             </th>
 
                             <td className="table-actions">
-                              <DetailPost id={item._id} refresh={refresh} />
+                              <DetailPost id = {item._id} item={item} refresh={refresh} />
                             </td>
                           </tr>
                         ))}
