@@ -60,6 +60,11 @@ export async function updatePostStatus(id, data) {
   const res = await getInstance().put(`/post/${id}`, data);
   return res?.data;
 }
+//update sub post status
+export async function updateSubPostStatus(id, data) {
+  const res = await getInstance().put(`/post/update-status/${id}`, data);
+  return res?.data;
+}
 
 //delete post
 export async function deletePostById(id, data) {
