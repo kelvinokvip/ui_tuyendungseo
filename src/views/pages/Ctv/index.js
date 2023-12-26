@@ -20,7 +20,7 @@ import UpdateCTV from "./Update";
 import Select2 from "react-select2-wrapper";
 import { Pagination } from "antd";
 
-const Filter = ({ keyword, setKeyword, isUser, setIsUser, optionUsers }) => {
+const Filter = ({ keyword, setKeyword, isUser, setIsUser, optionUsers, statusPost, optionStatusPost, setStatusPost }) => {
   return (
     <>
       <Row>
@@ -34,7 +34,7 @@ const Filter = ({ keyword, setKeyword, isUser, setIsUser, optionUsers }) => {
             }}
           />
         </Col>
-        <Col className="col-2">
+        <Col className="col-3">
           <Label>Loại tài khoản</Label>
           <Select2
             className="form-control"
@@ -48,6 +48,20 @@ const Filter = ({ keyword, setKeyword, isUser, setIsUser, optionUsers }) => {
             }
           />
         </Col>
+        <Col className="col-3">
+          <Label>Loại tài khoản Duyệt</Label>
+          <Select2
+            className="form-control"
+            defaultValue={statusPost}
+            options={{
+              placeholder: statusPost === "" ? "Tất cả" : statusPost,
+            }}
+            data={optionStatusPost}
+            onChange={(e) =>
+              setStatusPost(e.target.value === "all" ? "" : e.target.value)
+            }
+          />
+        </Col>
       </Row>
     </>
   );
@@ -57,6 +71,11 @@ const options = {
   0: "Chưa duyệt",
   1: "Đã duyệt",
 };
+
+const optionStatusPost = [
+  { id: "all", text: "Tất cả" },
+  { id: "1", text: "CTV có bài được duyệt" },
+]
 
 const optionUsers = [
   { id: "all", text: "Tất cả" },
@@ -77,6 +96,7 @@ const Ctv = () => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
   const [ctvDataDetail, steCtvDataDetail] = useState({});
   const [isUser, setIsUser] = useState("");
+  const [statusPost, setStatusPost] = useState("");
   //
   const handleCloseModal = () => {
     setIsOpenUpdateModal(false);
@@ -89,10 +109,10 @@ const Ctv = () => {
   const handleGetPagingCtv = async () => {
     try {
       setLoading(true);
-      const res = await getPagingCtv(pageSize, pageIndex, keywordDebouce, isUser);
+      const res = await getPagingCtv(pageSize, pageIndex, keywordDebouce, isUser, statusPost);
       setDataCtvList(res?.data);
       setTotalPages(res?.totalPages);
-      setTotalItem(res?.totalItem)
+      setTotalItem(res?.totalItem);
     } catch (error) {
       console.log("error:", error);
     } finally {
@@ -108,12 +128,12 @@ const Ctv = () => {
 
   useEffect(() => {
     handleGetPagingCtv();
-  }, [pageSize, pageIndex, keywordDebouce, isUser]);
+  }, [pageSize, pageIndex, keywordDebouce, isUser, statusPost]);
   return (
     <>
       <SimpleHeader
-        name="Bài viết"
-        parentName="Quản lí bài viết"
+        name="CTV"
+        parentName="Quản lý CTV"
         // isFilter
         // isNew
         setIsFilter={() => setIsFilter(!isFilter)}
@@ -128,6 +148,9 @@ const Ctv = () => {
             isUser={isUser}
             setIsUser={setIsUser}
             optionUsers={optionUsers}
+            statusPost={statusPost}
+            optionStatusPost={optionStatusPost}
+            setStatusPost={setStatusPost}
           />
         }
       />
@@ -194,7 +217,7 @@ const Ctv = () => {
                             <td>{item?.email} </td>
                             <td>{item?.telegram} </td>
                             <td>{item?.acceptPost?.length}
-                              {item?.acceptPost?.[0]?.category  && ' (' + item?.acceptPost.map(i=> i.category).join(', ') + ')'} 
+                              {item?.acceptPost?.[0]?.category && ' (' + item?.acceptPost.map(i => i.category).join(', ') + ')'}
                             </td>
                             <td>
                               <ul>

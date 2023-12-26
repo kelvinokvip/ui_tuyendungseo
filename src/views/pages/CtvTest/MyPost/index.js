@@ -38,11 +38,11 @@ const Filter = ({ keyword, setKeyword, options, setStatus, status, isOrder, setI
   return (
     <>
       <Row>
-        <Col className="col-3">
+        <Col className="col-4">
           <Label>Tiêu đề</Label>
           <Input value={keyword} onChange={(e) => setKeyword(e.target.value)} />
         </Col>
-        <Col className="col-2">
+        <Col className="col-4">
           <Label>Trạng thái</Label>
           <Select2
             className="form-control"
@@ -56,7 +56,7 @@ const Filter = ({ keyword, setKeyword, options, setStatus, status, isOrder, setI
             }
           />
         </Col>
-        <Col className="col-2">
+        <Col className="col-4">
           <Label>Loại bài</Label>
           <Select2
             className="form-control"
@@ -168,7 +168,7 @@ const MyPost = () => {
     <>
       <SimpleHeader
         name="Bài viết"
-        parentName="Quản lí bài viết"
+        parentName="Quản lý bài viết"
         // isFilter
         // isNew
         setIsFilter={() => setIsFilter(!isFilter)}

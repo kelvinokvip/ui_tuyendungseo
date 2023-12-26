@@ -70,7 +70,6 @@ const Filter = ({ options, setStatus, status, isOrder, setIsOrder, optionsOrders
         <Col>
           <Label>Lọc theo thời gian nộp bài</Label>
           <Form className="custom" style={{ display: 'flex', gap: 5 }}>
-            {console.log(startDate.current)}
             <Input type="date" style={{ width: 300 }} defaultValue={startDate.current} onChange={(e) => startDate.current = e.target.value} />
             <Input type="date" style={{ width: 300 }} defaultValue={endDate.current} onChange={(e) => endDate.current = e.target.value} />
             <Button style={{ whiteSpace: 'nowrap' }} onClick={handleGetPagingPost} title="Tìm kiếm">Tìm kiếm</Button>
@@ -155,11 +154,11 @@ const TestPost = () => {
       value: -2,
       color: "red",
     },
-    // {
-    //   title: "Hết hạn",
-    //   value: -1,
-    //   color: "red",
-    // },
+    {
+      title: "Hết hạn",
+      value: -1,
+      color: "red",
+    },
     {
       title: "Đang thực hiện",
       value: 0,
@@ -176,7 +175,7 @@ const TestPost = () => {
     <>
       <SimpleHeader
         name="Bài viết"
-        parentName="Quản lí bài viết"
+        parentName="Quản lý bài viết"
         // isFilter
         // isNew
         setIsFilter={() => setIsFilter(!isFilter)}
@@ -288,16 +287,16 @@ const TestPost = () => {
                                 }}
                               >
                                 {
-                                  (item?.status == 1 && item?.subCensor?.user?.username) ? "Đã kiểm":
-                                  statusOptions.find(
-                                    (itemS) => itemS.value === item?.status
-                                  )?.title
+                                  (item?.status == 1 && item?.subCensor?.user?.username) ? "Đã kiểm" :
+                                    statusOptions.find(
+                                      (itemS) => itemS.value === item?.status
+                                    )?.title
                                 }
                               </div>
                             </th>
 
                             <td className="table-actions">
-                              <DetailPost id = {item._id} item={item} refresh={refresh} />
+                              <DetailPost id={item._id} item={item} refresh={refresh} />
                             </td>
                           </tr>
                         ))}
