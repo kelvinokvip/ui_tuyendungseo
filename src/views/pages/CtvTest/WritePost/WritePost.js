@@ -60,14 +60,14 @@ const WritePost = () => {
       if (moment().isAfter(moment(res.data.receive.deadline))) {
         setExpires(true);
         navigate("/admin/my-test");
-      }else {
+      } else {
         //check 5 minutes 
         const time = moment().add(res.data.timer, "hour") - (moment(res.data.receive.deadline))
-        if ( time < 0) {
-            setTimer5p(moment().add(-time, "milliseconds"))
-            setShowModalTopic(true)
-            setIsStart(true);
-        }else{
+        if (time < 0) {
+          setTimer5p(moment().add(-time, "milliseconds"))
+          setShowModalTopic(true)
+          setIsStart(true);
+        } else {
           setTimer(new Date(res.data.receive.deadline));
           setIsStart(true);
         }
@@ -109,10 +109,10 @@ const WritePost = () => {
       expiryTimestamp,
       onExpire: handleSkip,
     });
-  
+
     return (
       <span>
-          <span>{minutes}</span>:<span>{seconds}</span>
+        <span>{minutes}</span>:<span>{seconds}</span>
       </span>
     );
   }
@@ -148,16 +148,56 @@ const WritePost = () => {
     navigate("/")
   }
   const handleSkip = async () => {
-    const res =  await updateDeadlinePost(id);
-    if(res) {
+    const res = await updateDeadlinePost(id);
+    if (res) {
       setTimer(new Date(res?.post?.receive?.deadline));
       setShowModalTopic(false);
     }
   }
+
+  const editorConfiguration = {
+    heading: {
+      options: [
+        { model: "paragraph", title: "Paragraph", class: "ck-heading_paragraph" },
+        {
+          model: "heading1",
+          view: "h1",
+          title: "Heading 1",
+          class: "ck-heading_heading1",
+        },
+        {
+          model: "heading2",
+          view: "h2",
+          title: "Heading 2",
+          class: "ck-heading_heading2",
+        },
+        {
+          model: "heading3",
+          view: "h3",
+          title: "Heading 3",
+          class: "ck-heading_heading3",
+        },
+        {
+          model: "heading4",
+          view: "h4",
+          title: "Heading 4",
+          class: "ck-heading_heading4",
+        },
+        {
+          model: "heading5",
+          view: "h5",
+          title: "Heading 5",
+          class: "ck-heading_heading5",
+        },
+      ],
+    },
+    height: 500
+  };
+
   return (
     <>
       <SimpleHeader name="Bài viết" parentName="Viết bài" />
-      {isStart && !showModalTopic  && <div className="main-wite-post my-3">
+      {isStart && !showModalTopic && <div className="main-wite-post my-3">
         <Container fluid>
           <Row>
             <Card className="card-frame" style={{ width: "100%" }}>
@@ -178,7 +218,7 @@ const WritePost = () => {
                 </div>
                 <div className="mb-2" >
                   <span>Mô tả:</span>
-                  <strong className="ml-4 test-des" dangerouslySetInnerHTML={{__html: post?.description }}></strong>
+                  <strong className="ml-4 test-des" dangerouslySetInnerHTML={{ __html: post?.description }}></strong>
                 </div>
                 <div>
                   <Label>Số từ tối thiểu:</Label>
@@ -208,7 +248,7 @@ const WritePost = () => {
                     editor={Editor}
                     plugins={["WordCount"]}
                     data={editorContent}
-                    config={{ height: 500 }}
+                    config={editorConfiguration}
                     onReady={(editor) => {
                       // You can store the "editor" and use when it is needed.
                       editor.plugins
@@ -291,44 +331,44 @@ const WritePost = () => {
         </Container>
       </div>}
       {showModalTopic && (
-        <Modal isOpen={true} toggle={() => {}}>
-        <ModalHeader>Yêu cầu bài viết</ModalHeader>
-        <ModalBody>
-          <div>
-            <Label>Tiêu đề:</Label>
-            <strong className="ml-4">{post?.title}</strong>
-          </div>
-          <div>
-            <Label>Chuyên mục:</Label>
-            <strong className="ml-4">{post?.category}</strong>
-          </div>
-          <div>
-            <Label>Từ khóa:</Label>
-            <strong className="ml-4">
-              {post?.keywords?.map((item) => item).toString()}
-            </strong>
-          </div>
-          <div className="mb-2">
-            <span>Mô tả:</span>
-            <strong className="ml-4 test-des" dangerouslySetInnerHTML={{__html: post?.description }}></strong>
-          </div>
-          <div>
-            <Label>Số từ tối thiểu:</Label>
-            <strong className="ml-4">{post?.word}</strong>
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          {timer5p && <div style={{ textAlign: "center", color: "red", fontSize: 13, marginRight: 20 }}>
-            <span>Điếm ngược tự động bắt đầu làm :</span>
-            <strong className="ml-1">
-              <MyTimer2 expiryTimestamp={timer5p} />         
-            </strong>
-          </div>}
-          <Button color="warning" onClick={handleSkip}>
-            Bỏ qua
-          </Button>
-        </ModalFooter>
-      </Modal>
+        <Modal isOpen={true} toggle={() => { }}>
+          <ModalHeader>Yêu cầu bài viết</ModalHeader>
+          <ModalBody>
+            <div>
+              <Label>Tiêu đề:</Label>
+              <strong className="ml-4">{post?.title}</strong>
+            </div>
+            <div>
+              <Label>Chuyên mục:</Label>
+              <strong className="ml-4">{post?.category}</strong>
+            </div>
+            <div>
+              <Label>Từ khóa:</Label>
+              <strong className="ml-4">
+                {post?.keywords?.map((item) => item).toString()}
+              </strong>
+            </div>
+            <div className="mb-2">
+              <span>Mô tả:</span>
+              <strong className="ml-4 test-des" dangerouslySetInnerHTML={{ __html: post?.description }}></strong>
+            </div>
+            <div>
+              <Label>Số từ tối thiểu:</Label>
+              <strong className="ml-4">{post?.word}</strong>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            {timer5p && <div style={{ textAlign: "center", color: "red", fontSize: 13, marginRight: 20 }}>
+              <span>Điếm ngược tự động bắt đầu làm :</span>
+              <strong className="ml-1">
+                <MyTimer2 expiryTimestamp={timer5p} />
+              </strong>
+            </div>}
+            <Button color="warning" onClick={handleSkip}>
+              Bỏ qua
+            </Button>
+          </ModalFooter>
+        </Modal>
       )}
       {!isStart && (
         <ReactBSAlert
