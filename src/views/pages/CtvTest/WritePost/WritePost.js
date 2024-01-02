@@ -112,7 +112,7 @@ const WritePost = () => {
   }
 
   const handleFinish = async (isExpires = false) => {
-    if (new Date() < timer) {
+    if (new Date() > timer) {
       isExpires = true;
     }
 
