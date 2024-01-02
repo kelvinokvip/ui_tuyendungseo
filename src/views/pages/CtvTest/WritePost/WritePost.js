@@ -31,7 +31,6 @@ import { toast } from "react-toastify";
 import "./styles.scss";
 import { updateDeadlinePost } from "api/post";
 
-
 const WritePost = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,14 +46,13 @@ const WritePost = () => {
   const [expires, setExpires] = useState(false);
   const [showModalTopic, setShowModalTopic] = useState(false);
   const [timer5p, setTimer5p] = useState(0);
+
   const handleGetData = async () => {
     const res = await getPostById(id);
     if (!res.success) {
       navigate("/admin/my-test");
     }
     setPost(res?.data);
-
-
     //check expires
     if (res?.data?.receive?.deadline) {
       if (moment().isAfter(moment(res.data.receive.deadline))) {
@@ -62,23 +60,19 @@ const WritePost = () => {
         navigate("/admin/my-test");
       } else {
         //check 5 minutes 
-        const time = moment().add(res.data.timer, "hour") - (moment(res.data.receive.deadline))
+        const time = moment().add(res.data.timer, "hour") - (moment(res.data.receive.deadline));
         if (time < 0) {
-          setTimer5p(moment().add(-time, "milliseconds"))
-          setShowModalTopic(true)
-          setIsStart(true);
+          setTimer5p(moment().add(-time, "milliseconds"));
+          setShowModalTopic(true);
         } else {
           setTimer(new Date(res.data.receive.deadline));
-          setIsStart(true);
         }
+        setIsStart(true);
       }
     } else {
       setIsStart(false);
     }
   };
-  useEffect(() => {
-    handleGetData();
-  }, []);
 
   const handleStartPost = async () => {
     const res = await startPost(id);
@@ -116,19 +110,26 @@ const WritePost = () => {
       </span>
     );
   }
+
   const handleFinish = async (isExpires = false) => {
+    if (new Date() < timer) {
+      isExpires = true;
+    }
+
     const dataReq = {
       content: editorContent,
       title: title,
       word: wordCount,
       expires: isExpires,
     };
+
     if (!isExpires) {
       if (wordCount < post?.word) {
         toast.warning("Bài viết của bạn chưa đạt đủ số từ bài viết!");
         return;
       }
     }
+
     const res = await finishPost(id, dataReq);
     if (res?.success) {
       toast.success(
@@ -144,9 +145,11 @@ const WritePost = () => {
       toast.error(res?.message);
     }
   };
+
   const handleCancel = () => {
     navigate("/")
   }
+
   const handleSkip = async () => {
     const res = await updateDeadlinePost(id);
     if (res) {
@@ -194,6 +197,9 @@ const WritePost = () => {
     height: 500
   };
 
+  useEffect(() => {
+    handleGetData();
+  }, []);
   return (
     <>
       <SimpleHeader name="Bài viết" parentName="Viết bài" />
